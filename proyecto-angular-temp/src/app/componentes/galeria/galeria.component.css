@@ -17,6 +17,7 @@
 
 /* Botón centrado sobre la imagen */
 .promo-btn {
+  color: white;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -27,5 +28,6 @@
 }
 
 .container-text{
+  font-weight: 700;
   margin-top: 10px;
 }

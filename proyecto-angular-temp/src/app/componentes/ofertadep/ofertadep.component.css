@@ -3,7 +3,7 @@
   overflow: hidden;
   border-radius: 1rem;
   cursor: pointer;
-  height: 300px; /* Altura fija para todas las cards */
+  height: 400px; /* Altura fija para todas las cards */
   transition: transform 0.3s ease;
 }
 

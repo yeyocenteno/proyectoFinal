@@ -1,6 +1,4 @@
-<app-busqueda (searchChanged)="busqueda($event)"></app-busqueda>
-
-<div class="cursos-container">
+<div class="cursos-container mt-5">
   @if (cursosFiltrados.length > 0) {
     <div class="grid-container">
       @for (curso of cursosFiltrados; track curso.id) {
@@ -8,6 +6,13 @@
           <a [routerLink]="['/curso', curso.id]" class="curso-link">
             <img [src]="curso.imagen" alt="{{ curso.nombre }}" class="curso-image" />
             <h2 class="curso-title">{{ curso.nombre }}</h2>
+
+            <div class="curso-info">
+              <p><strong>Cupos:</strong> {{ curso.cupos ?? 'No especificado' }}</p>
+              <p><strong>Horarios:</strong> {{ curso.horarios?.join(', ') ?? 'No especificado' }}</p>
+              <p><strong>Instructor:</strong> {{ curso.instructor ?? 'No especificado' }}</p>
+              <p><strong>Descripción:</strong> {{ curso.descripcion }}</p>
+            </div>
           </a>
         </div>
       }
