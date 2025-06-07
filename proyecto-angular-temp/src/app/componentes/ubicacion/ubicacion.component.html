@@ -1,12 +1,33 @@
-<div class="texto">Ubicación</div>
-<div class="container-flex">
-    <div id="map" style="height: 400px; width: 100%;"></div>
-    <div class="info ">
-        <div class="card">
-            <h1>Tu nuevo hogar</h1>
-            <div class="card-body">
-                    Estamos ubicados en:  <br>MERIDIAM PARK AV. PASEO DE SAN GERARDO 111, FRACCIONAMIENTO SAN GERARDO, CP 20348, AGUASCALIENTES
-            </div>
-          </div>
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+<div class="container py-5">
+  <h2 class="mb-4 text-center">Ubicación</h2>
+  <div class="row align-items-stretch shadow rounded overflow-hidden">
+    <div class="col-md-6 p-0">
+      <div id="map" style="height: 100%; min-height: 400px;"></div>
     </div>
+    <div class="col-md-6 bg-light p-4 d-flex flex-column justify-content-center">
+      <h4 class="mb-3">Tu nuevo hogar</h4>
+      <p>
+        Estamos ubicados en:
+        <br>
+        <strong>MERIDIAM PARK</strong><br>
+        AV. PASEO DE SAN GERARDO 111<br>
+        FRACCIONAMIENTO SAN GERARDO<br>
+        CP 20348, AGUASCALIENTES
+      </p>
+    </div>
+  </div>
 </div>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+  const map = L.map('map').setView([21.8832, -102.2916], 16); // Coordenadas de Aguascalientes
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap',
+  }).addTo(map);
+  L.marker([21.8832, -102.2916]).addTo(map).bindPopup("¡Aquí estamos!").openPopup();
+</script>

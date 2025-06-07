@@ -1,33 +1,31 @@
-.fondo-container {
-    margin: 0;
-    background-color: #fafafa;
-    color: white;
-  }
-  
-h1{
-    padding: 30px;
-    color: gray;
-    text-shadow: 2px 2px 4px rgba(196, 193, 193, 0.7);
-    font-size: 60px;
+.hover-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1rem;
+  cursor: pointer;
+  height: 300px; /* Altura fija para todas las cards */
+  transition: transform 0.3s ease;
 }
-h2{
-    color: gray;
-    font-size: 30px;
+
+.hover-card img.card-img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover; /* Mantiene proporciones sin deformar */
 }
-h5{
-    font-size: 24px;
+
+.overlay-text {
+  background: rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  color: white;
+  padding: 1rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  border-radius: 1rem;
 }
-.card {
-    align-items: center;
-    margin: 10px;
-    padding: 10px;
-    justify-content: center;
-    text-shadow: 2px 2px 4px rgba(184, 182, 182, 0.7);
-    font-style:bold;
-    color:#9ACBD0;
-    background-color:rgb(230, 223, 223);
-    height: 200px;
-}
-.card:hover{
-    box-shadow: 10px 10px 10px #9ACBD0;
+
+.hover-card:hover .overlay-text {
+  opacity: 1;
 }

@@ -1,70 +1,31 @@
-.container-flex {
-    background-color:#fafafa ;
-    display: flex;
-    gap: 2rem; /* Espacio entre galería e info */
-    align-items: center; /* Centra verticalmente los hijos */
-  }
-.galeria{
-    flex: 3;
-    width: 100vw;
-    background-color: #fafafa;
+
+
+.promo-bar {
+  height: 210px;
+  max-width: 95%;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 1rem;
 }
-h1{
-    padding-top: 30px;
-    padding-bottom: 10px;
-    color: #ffbf00;
-    font-size: 30px;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-weight: bolder;
-    text-shadow: 2px 2px 4px #b4afafb3;
+
+.promo-bar img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 1rem;
 }
-.info {
-    background-color:#fafafa ;
-    flex: 2;
-    display: flex;
-    justify-content:left;
-    align-items:start;
+
+/* Botón centrado sobre la imagen */
+.promo-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Anton', sans-serif;
+  padding: 0.4rem 1.2rem;
+  font-size: 0.9rem;
 }
-button{
-  margin: 10px;
-  padding: 10px;
-  background-color: #9ACBD0;
-  border: none;
+
+.container-text{
+  margin-top: 10px;
 }
-button:hover{
-  background-color: #7fb2b8;
-}
-.info .card {
-    text-align: center;
-    border: none;
-    background-color:#fafafa ;
-    text-shadow: 2px 2px 4px rgba(180, 175, 175, 0.7);
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 25px;
-    height: 300px;
-    max-width: 600px; /* Ajusta según prefieras */
-  }
-.main-image {
-    padding: auto;
-    width: 100%;
-    max-width: 800px;
-    height: auto;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.3);
-  }
-  
-  .thumb-image {
-    width: 100px;
-    height: 70px;
-    object-fit: cover;
-    cursor: pointer;
-    border: 2px solid transparent;
-    border-radius: 5px;
-    transition: border 0.3s;
-  }
-  
-  .thumb-image:hover,
-  .thumb-image.selected {
-    border: 2px solid #007bff;
-  }
-  

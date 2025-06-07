@@ -47,5 +47,9 @@
     "postcss": "^8.5.3",
     "tailwindcss": "^4.1.6",
     "typescript": "~5.7.2"
-  }
+  },
+  "description": "This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.4.",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC"
 }
