@@ -1,3 +1,5 @@
+<app-busqueda (searchChanged)="busqueda($event)"></app-busqueda>
+
 <div class="cursos-container mt-5">
   @if (cursosFiltrados.length > 0) {
     <div class="grid-container">
@@ -21,3 +23,4 @@
     <p class="loading-message">No se encontraron cursos con ese nombre.</p>
   }
 </div>
+
