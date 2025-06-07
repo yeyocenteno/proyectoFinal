@@ -1,0 +1,22 @@
+<div class="position-absolute top-50 start-50 translate-middle text-center text-white z-3">
+  <h1 class="display-3 fw-bold text-shadow">GYM-MY LOPEZ</h1>
+  <p class="lead fw-semibold slogan">¡Transforma tu cuerpo, eleva tu mente!</p>
+</div>
+
+<div id="carouselHeader" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner" style="height: 100vh;">
+    <div class="carousel-item active" *ngIf="images.length > 0">
+      <img [src]="images[0]" class="d-block w-100 h-100 object-fit-cover" alt="Slide 1" />
+    </div>
+    <div class="carousel-item" *ngFor="let image of images.slice(1); let i = index">
+      <img [src]="image" class="d-block w-100 h-100 object-fit-cover" [alt]="'Slide ' + (i + 2)" />
+    </div>
+  </div>
+
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselHeader" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon"></span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselHeader" data-bs-slide="next">
+    <span class="carousel-control-next-icon"></span>
+  </button>
+</div>

@@ -1,0 +1,39 @@
+.container-flex {
+    background-color:#fafafa ;
+    display: flex;
+    gap: 2rem; /* Espacio entre galería e info */
+    align-items: center; /* Centra verticalmente los hijos */
+}
+.texto{
+    background-color:#fafafa ;
+    font-weight: bolder;
+    text-shadow: 2px 2px 4px #b4afafb3;
+    color: #ffbf00;
+    font-size: 60px;
+    padding: 50px;
+    text-align: center;
+}
+#map{
+    flex: 2;
+    box-shadow: 10px 10px 20px #9ACBD0; 
+    border: solid 3px #7fb2b8;
+    margin: 50px;
+}
+.info {
+    font-size: 25px;
+    flex: 2;
+    margin: 100px;
+    display: flex;
+    justify-content:left;
+    align-items:start;
+}
+.info h1{
+
+    font-weight: bolder;
+    text-shadow: 2px 2px 4px #b4afafb3;
+    color: #ffbf00;
+}
+.info .card{
+    background: local;
+    border: none;
+}

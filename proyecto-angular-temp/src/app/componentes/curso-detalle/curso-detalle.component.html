@@ -1,0 +1,48 @@
+<div class="curso-detalle-container">
+  @if (curso) {
+    <div class="curso-detalle">
+      <img [src]="curso.imagen" alt="{{ curso.nombre }}" class="curso-image" />
+
+      <h1 class="curso-titulo">{{ curso.nombre }}</h1>
+      <p class="curso-descripcion">{{ curso.descripcion }}</p>
+
+      <p><strong>Duración:</strong> {{ curso.duracion }}</p>
+      <p><strong>Intensidad:</strong> {{ curso.intensidad }}</p>
+      <p><strong>Categoría:</strong> {{ curso.categoria }}</p>
+      <p><strong>Requisitos:</strong> {{ curso.requisitos }}</p>
+      <p><strong>Instructor:</strong> {{ curso.instructor }}</p>
+      <p><strong>Cupos disponibles:</strong> {{ curso.cupos }}</p>
+      <p><strong>Ubicación:</strong> {{ curso.ubicacion }}</p>
+
+      @if (curso.horarios && curso.horarios.length > 0) {
+        <p><strong>Horarios:</strong></p>
+        <ul>
+          @for (horario of curso.horarios; track horario) {
+            <li>{{ horario }}</li>
+          }
+        </ul>
+      }
+
+      @if (curso.beneficios && curso.beneficios.length > 0) {
+        <p><strong>Beneficios:</strong></p>
+        <ul>
+          @for (beneficio of curso.beneficios; track beneficio) {
+            <li>{{ beneficio }}</li>
+          }
+        </ul>
+      }
+        <div>
+        <button mat-raised-button color="primary" (click)="goBack() " class="back-button">
+        Regresar a Cursos
+        </button>
+        </div>
+    </div>
+  } @else {
+    <p class="loading-message">Cargando detalles del curso...</p>
+      <div>
+      <button mat-raised-button color="primary" (click)="goBack() " class="back-button">
+      Regresar a Cursos
+      </button>
+      </div>
+  }
+</div>

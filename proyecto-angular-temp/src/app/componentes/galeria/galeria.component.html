@@ -1,0 +1,33 @@
+<div class="container-flex">
+    <div class="galeria">
+        <div class="container my-4">
+            
+            <div class="text-center">
+                <h1>UN LUGAR PARA DESAROLLARTE</h1>
+              <img [src]="selectedImage" class="main-image mb-3" alt="Imagen grande">
+            </div>
+          
+            <div class="d-flex justify-content-center flex-wrap gap-2">
+              @for (img of images; track img) {
+                <img [src]="img"
+                     (click)="selectImage(img)"
+                     class="thumb-image"
+                     [class.selected]="img === selectedImage"
+                     alt="Miniatura">
+              }
+            </div>
+        </div>
+    </div>
+    <div class="info ">
+        <div class="card">
+            <h1>Bienvenido a tu nuevo hogar</h1>
+            <div class="card-body">
+                Estamos preparados para recibirte en nuestras instalaciones, con asesores capacitados y equipos de vanguardia con mantenimiento continuo, aprovecha esta oportunidad y conviertete en un bottom G!!!  
+                <div class="d-grid gap-2 col-6 mx-auto">
+                    <button class="btn btn-primary" type="button" routerLink="/suscripcion">Inscribete ahora!</button>
+                </div>
+            </div>
+          </div>
+    </div>
+</div>
+  

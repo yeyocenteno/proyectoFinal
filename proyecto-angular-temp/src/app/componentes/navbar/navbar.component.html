@@ -1,0 +1,101 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#"><img src="GYMYL.png" height="50px"></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button> 
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/inicio" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Inicio</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link px-3 py-2 rounded-pill" routerLink="/curso" routerLinkActive="active">Cursos</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link px-3 py-2 rounded-pill" routerLink="/nosotros" routerLinkActive="active">Nosotros</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link px-3 py-2 rounded-pill" routerLink="/suscripcion" routerLinkActive="active">Suscripción</a>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        @if (currentAdmin) {
+          <li class="nav-item d-flex align-items-center me-3">
+            <span class="fw-bold text-success">👤 {{ currentAdmin.nombre }}</span>
+          </li>
+          <li class="nav-item">
+            <button class="btn btn-outline-danger btn-sm" (click)="logout()" routerLink="/inicio">Logout</button>
+          </li>
+        } @else {
+          <li class="nav-item">
+            <a class="nav-link text-primary fw-bold" href="#" data-bs-toggle="modal" data-bs-target="#adminLoginModal">Login</a>
+          </li>
+        }
+      </ul>
+      
+      @if (currentAdmin) {
+        <a class="nav-link d-flex align-items-center" routerLink="/tablas" title="Ir a Tablas" routerLinkActive="active">
+          <svg xmlns="http://www.w3.org/2000/svg"
+               width="24" height="24" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 17h2" />
+            <path d="M3 5a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-14z" />
+            <path d="M11 12h6" />
+            <path d="M13 7h4" />
+          </svg>
+        </a>
+      } @else {
+        <span class="nav-link d-flex align-items-center text-muted" title="Inicia sesión para acceder" style="cursor: not-allowed;">
+          <svg xmlns="http://www.w3.org/2000/svg"
+               width="24" height="24" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 17h2" />
+            <path d="M3 5a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-14z" />
+            <path d="M11 12h6" />
+            <path d="M13 7h4" />
+          </svg>
+        </span>
+      }
+    </div>
+  </div>
+</nav>
+
+<!-- Modal de login -->
+<div class="modal fade" id="adminLoginModal" tabindex="-1" aria-labelledby="adminLoginModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="adminLoginModalLabel">Inicio de sesión</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="adminUsername" class="form-label">Usuario</label>
+            <input type="text" class="form-control" id="adminUsername" placeholder="admin1" [(ngModel)]="admin.username" name="username">
+          </div>
+          <div class="mb-3">
+            <label for="adminPassword" class="form-label">Contraseña</label>
+            <input type="password" class="form-control" id="adminPassword" placeholder="********" [(ngModel)]="admin.password" name="password">
+          </div>
+        </form>
+        @if (loginError) {
+          <div class="alert alert-danger mt-2">
+            Usuario o contraseña incorrectos.
+          </div>
+        }
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="login()">Iniciar sesión</button>
+      </div>
+    </div>
+  </div>
+</div>

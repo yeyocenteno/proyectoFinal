@@ -1,0 +1,128 @@
+<div class="seccion">
+  <div class="planes">
+    <app-planes></app-planes>
+  </div>
+  <div class="contenedor">
+  <div class="formulario">
+    <form [formGroup]="suscripcionForm" (ngSubmit)="onSubmit()" class="form-container">
+      
+      <div class="form-group">
+        <label for="nombre">Nombre completo:</label>
+        <input id="nombre" type="text" formControlName="nombre" />
+        @if ((suscripcionForm.get('nombre')?.touched || hovering) && suscripcionForm.get('nombre')?.invalid) {
+          <div class="error">
+            @if (suscripcionForm.get('nombre')?.errors?.['required']) {
+              El nombre es requerido.
+            }
+            @if (suscripcionForm.get('nombre')?.errors?.['minlength']) {
+              Debe tener al menos 3 caracteres.
+            }
+          </div>
+        }
+      </div>
+      <div class="form-group">
+        <label for="correo">Correo electrónico:</label>
+        <input id="correo" type="email" formControlName="correo" />
+        @if ((suscripcionForm.get('correo')?.touched || hovering) && suscripcionForm.get('correo')?.invalid) {
+          <div class="error">
+            @if (suscripcionForm.get('correo')?.errors?.['required']) {
+              El correo es requerido.
+            }
+            @if (suscripcionForm.get('correo')?.errors?.['email']) {
+              El correo no es válido.
+            }
+          </div>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="plan">Tipo de plan:</label>
+        <select id="plan" formControlName="plan">
+          <option value="">Seleccione un plan</option>
+          @for (plan of planes; track plan) {
+            <option [value]="plan">{{ plan }}</option>
+          }
+        </select>
+        @if ((suscripcionForm.get('plan')?.touched || hovering) && suscripcionForm.get('plan')?.invalid) {
+          <div class="error">El plan es obligatorio.</div>
+        }
+      </div>
+
+      <div class="form-group">
+        <label>Objetivos:</label>
+        <div formArrayName="objetivos">
+          @for (objetivo of objetivos; let i = $index; track objetivo) {
+            <label>
+              <input type="checkbox" [formControlName]="i" />
+              {{ objetivo }}
+            </label>
+          }
+        </div>
+        @if ((suscripcionForm.get('objetivos')?.touched || hovering) && suscripcionForm.get('objetivos')?.errors?.['requerido']) {
+          <div class="error">Debes seleccionar al menos un objetivo.</div>
+        }
+      </div>
+
+      <div class="form-group">
+        <label>Género:</label>
+        <label>
+          <input type="radio" value="Masculino" formControlName="genero" /> Masculino
+        </label>
+        <label>
+          <input type="radio" value="Femenino" formControlName="genero" /> Femenino
+        </label>
+        <label>
+          <input type="radio" value="Otro" formControlName="genero" /> Otro
+        </label>
+        @if ((suscripcionForm.get('genero')?.touched || hovering) && suscripcionForm.get('genero')?.invalid) {
+          <div class="error">Seleccionar el género es obligatorio.</div>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="fechaInicio">Fecha de inicio:</label>
+        <input id="fechaInicio" type="date" formControlName="fecha" />
+        @if ((suscripcionForm.get('fecha')?.touched || hovering) && suscripcionForm.get('fecha')?.invalid) {
+  <div class="error">
+    @if (suscripcionForm.get('fecha')?.errors?.['required']) {
+      La fecha es obligatoria.
+    }
+    @if (suscripcionForm.get('fecha')?.errors?.['fechaInvalida']) {
+      No puedes elegir una fecha anterior a hoy.
+    }
+    @if (suscripcionForm.get('fecha')?.errors?.['fechaFueraDeRango']) {
+      La fecha no puede ser más de 10 días después de hoy.
+    }
+  </div>
+}
+
+      </div>
+
+      <button type="submit"
+              [disabled]="suscripcionForm.invalid"
+              (mouseenter)="hovering = true"
+            >
+        {{ editando ? 'Actualizar suscripción' : 'Suscribirse' }}
+      </button>
+    </form>
+  </div>
+<br><br><br>
+
+<div 
+    class="video-container" 
+    [ngClass]="{ 'resaltado': true }" 
+    [ngStyle]="videoEstilos"
+  >
+    <iframe 
+      width="560" 
+      height="315" 
+      [src]="video | domseguro:'https://www.youtube.com/embed/'" 
+      frameborder="0" 
+      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+      allowfullscreen>
+    </iframe>
+  </div>
+
+</div>
+<br><br><br>
+</div>

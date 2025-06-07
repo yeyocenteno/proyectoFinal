@@ -1,0 +1,37 @@
+.conteiner-flex{
+    background: local;
+    height: 100vh;
+    padding: 5rem;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+h5{
+    font-size: 25px;
+}
+.card-body{
+    color: #f0c648;
+    font-size: 22px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+.card{
+    border: none;
+    height: 650px ;
+    box-shadow: 10px 10px 20px rgb(179, 179, 179);
+    align-items: center;
+    background-color: #f5f3f3;
+    margin: 50px;
+}
+
+.card:hover{
+    border: none;
+    box-shadow: 10px 10px 10px  #9bbad7;
+}
+#info li{
+    border: none;
+   background-color: #f5f3f3;
+}

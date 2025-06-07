@@ -1,0 +1,13 @@
+<div class="titulo" [ngStyle]="{'text-align': 'center', 'color': 'red', 'font-size': '20px','margin-top':'50px'}">
+    <h1>ADELANTE, TE ESPERA UNA NUEVA PASION</h1>
+</div>
+<mat-form-field appearance="outline"   [ngStyle]="{
+    width: '100%',
+    maxWidth: '400px',
+    margin: '20px auto',
+    display: 'block'
+  }"
+ class="search-field">
+  <mat-label>Buscar curso</mat-label>
+  <input matInput (input)="onSearchChange($event)" placeholder="Escribe el nombre del curso..." />
+</mat-form-field>

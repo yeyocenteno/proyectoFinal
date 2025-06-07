@@ -1,0 +1,9 @@
+.pag{
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+.head{  
+    background-color: #fafafa;
+    flex: 1;
+}

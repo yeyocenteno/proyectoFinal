@@ -1,0 +1,63 @@
+.contenedor {
+  padding: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+}
+
+h2 {
+  margin-top: 30px;
+  color: #1a1a1a;
+  text-align: center;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  background-color: #2c3e50;
+  color: white;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+button {
+  padding: 5px 10px;
+  margin: 2px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+button:first-child {
+  background-color: #3498db;
+  color: white;
+}
+
+button:last-child {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.sin-datos {
+  text-align: center;
+  color: #999;
+  font-style: italic;
+  margin-top: 20px;
+}

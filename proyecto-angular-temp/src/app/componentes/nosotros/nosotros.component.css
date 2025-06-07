@@ -1,0 +1,145 @@
+/* Estilos generales */
+body, html {
+  margin: 0;
+  padding: 0;
+  background-color: #fafafa;
+  font-family: Arial, sans-serif;
+  height: 100%;
+}
+
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* Contenedor centrado */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 0;
+}
+
+/* Formulario con estilos personalizados */
+.form-container {
+  background-color: #e6dfdf;
+  color: #2973B2;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  width: 100%;
+  text-shadow: 1px 1px 2px rgba(184, 182, 182, 0.7);
+}
+
+/* Grupos del formulario */
+.mb-3 {
+  margin-bottom: 20px;
+}
+
+/* Inputs, select y date */
+input[type="text"],
+input[type="email"],
+input[type="date"],
+select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+/* Checkbox y radio */
+input[type="checkbox"],
+input[type="radio"] {
+  margin-right: 10px;
+}
+
+/* Etiquetas */
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+/* Botón */
+button[type="submit"] {
+  background-color: #2973B2;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 20px;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+button[type="submit"]:disabled {
+  background-color: #9bbad7;
+  cursor: not-allowed;
+}
+
+/* Mensajes de error */
+.text-danger {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+/* Leyenda superior */
+.form-legend {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #2973B2;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Eliminar borde del fieldset */
+fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Estilo y alineación de checkboxes y radios */
+.form-check {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.form-check-input {
+  margin-right: 10px;
+  margin-top: 0;
+}
+
+.equipo-container {
+  background-color: #f0f0f0;
+  padding: 20px;
+  border-radius: 10px;
+}
+.card img {
+  height: 200px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+/* Asegúrate de quitar este bloque o modificarlo para que no afecte negativamente */
+:host {
+  display: block;
+  min-height: 100vh;
+}

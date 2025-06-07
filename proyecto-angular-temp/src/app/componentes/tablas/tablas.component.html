@@ -1,0 +1,89 @@
+<div class="contenedor">
+  <h2>Suscripciones</h2>
+
+  @if (suscripciones.length > 0) {
+    <table>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Correo</th>
+          <th>Fecha</th>
+          <th>Plan</th>
+          <th>Objetivos</th>
+          <th>Género</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (suscripcion of suscripciones; let i = $index; track suscripcion) {
+          <tr>
+            <td>{{ suscripcion.nombre }}</td>
+            <td>{{ suscripcion.correo }}</td>
+            <td>{{ suscripcion.fecha }}</td>
+            <td>{{ suscripcion.plan }}</td>
+            <td>
+              <ul>
+                @for (objetivo of suscripcion.objetivos; let j = $index; track objetivo) {
+                  @if (objetivo) {
+                    <li>{{ ['Perder peso', 'Ganar masa muscular', 'Mantener condición'][j] }}</li>
+                  }
+                }
+              </ul>
+            </td>
+            <td>{{ suscripcion.genero }}</td>
+            <td>
+              <button (click)="editarRegistro('suscripcion', i)">Editar</button>
+              <button (click)="eliminarSuscripcion(i)">Eliminar</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  } @else {
+    <p class="sin-datos">No hay suscripciones registradas.</p>
+  }
+
+  <hr />
+
+  <h2>Quejas</h2>
+
+  @if (quejas.length > 0) {
+    <table>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Correo</th>
+          <th>Motivo</th>
+          <th>Fecha</th>
+          <th>Opciones</th>
+          <th>Gravedad</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (queja of quejas; let i = $index; track queja) {
+          <tr>
+            <td>{{ queja.nombre }}</td>
+            <td>{{ queja.correo }}</td>
+            <td>{{ queja.motivo }}</td>
+            <td>{{ queja.fecha }}</td>
+            <td>
+              <ul>
+                @for (opcion of queja.opciones; let j = $index; track $index){
+                  <li>{{ opcion }}</li>
+                }
+              </ul>
+            </td>
+            <td>{{ queja.gravedad }}</td>
+            <td>
+              <button (click)="editarRegistro('queja', i)">Editar</button>
+              <button (click)="eliminarQueja(i)">Eliminar</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  } @else {
+    <p class="sin-datos">No hay quejas registradas.</p>
+  }
+</div>
