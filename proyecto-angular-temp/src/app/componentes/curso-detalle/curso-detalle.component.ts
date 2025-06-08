@@ -3,11 +3,12 @@ import { Curso, CursoService } from '../../services/curso.service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { Location } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
+import { GaleriaComponent } from '../galeria/galeria.component';
 @Component({
   selector: 'app-curso-detalle',
   standalone: true,
-  imports: [MatFormFieldModule, MatInputModule],
+  imports: [MatFormFieldModule, MatInputModule,GaleriaComponent],
   templateUrl: './curso-detalle.component.html',
   styleUrl: './curso-detalle.component.css'
 })

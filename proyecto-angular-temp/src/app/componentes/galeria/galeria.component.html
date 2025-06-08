@@ -1,10 +1,12 @@
-<div class="container-text text-center mb-2 font-anton fs-3 text-uppercase">
-  Únete a nosotros
-</div>
 
-<div class="position-relative w-100 promo-bar">
+<div class="position-relative w-100 promo-bar my-5">
   <img src="foto1.jpg" alt="Promo" class="img-fluid w-100 h-100 rounded-4 object-fit-cover">
-  <a routerLink="/suscripcion" class="btn btn-warning btn-sm promo-btn text-uppercase fw-bold shadow">
-    ¡Primer mer gratis!
-  </a>
+
+  <!-- Texto encima del botón -->
+  <div class="position-absolute top-50 start-50 translate-middle text-white text-center z-2" style="text-shadow: 1px 1px 5px rgba(0,0,0,0.7);">
+    <h2 class="fw-bold mb-3 display-5">¡Primer mes gratis!</h2>
+    <a routerLink="/suscripcion" class="btn btn-warning btn-lg text-uppercase fw-bold shadow rounded-pill" style="color: white;">
+      ¡Inscríbete ya!
+    </a>
+  </div>
 </div>

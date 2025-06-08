@@ -1,48 +1,80 @@
-<div class="curso-detalle-container">
+<div class="contenedor">
+<div class="curso-detalle-container container py-4">
   @if (curso) {
-    <div class="curso-detalle">
-      <img [src]="curso.imagen" alt="{{ curso.nombre }}" class="curso-image" />
+    <h1 class="text-uppercase fw-bold mb-2 text-start text-primary-emphasis">GIMNASIO</h1>
 
-      <h1 class="curso-titulo">{{ curso.nombre }}</h1>
-      <p class="curso-descripcion">{{ curso.descripcion }}</p>
-
-      <p><strong>Duración:</strong> {{ curso.duracion }}</p>
-      <p><strong>Intensidad:</strong> {{ curso.intensidad }}</p>
-      <p><strong>Categoría:</strong> {{ curso.categoria }}</p>
-      <p><strong>Requisitos:</strong> {{ curso.requisitos }}</p>
-      <p><strong>Instructor:</strong> {{ curso.instructor }}</p>
-      <p><strong>Cupos disponibles:</strong> {{ curso.cupos }}</p>
-      <p><strong>Ubicación:</strong> {{ curso.ubicacion }}</p>
-
-      @if (curso.horarios && curso.horarios.length > 0) {
-        <p><strong>Horarios:</strong></p>
-        <ul>
-          @for (horario of curso.horarios; track horario) {
-            <li>{{ horario }}</li>
-          }
-        </ul>
-      }
-
-      @if (curso.beneficios && curso.beneficios.length > 0) {
-        <p><strong>Beneficios:</strong></p>
-        <ul>
-          @for (beneficio of curso.beneficios; track beneficio) {
-            <li>{{ beneficio }}</li>
-          }
-        </ul>
-      }
-        <div>
-        <button mat-raised-button color="primary" (click)="goBack() " class="back-button">
-        Regresar a Cursos
-        </button>
+    <div class="row g-4">
+      <!-- Lado izquierdo: Detalles -->
+      <div class="col-md-6">
+        <!-- Contenedor 1 -->
+        <div class="p-3 rounded border border-warning mb-3 bg-light shadow-sm">
+          <h3 class="fw-bold mb-2">{{ curso.nombre }}</h3>
+          <p>{{ curso.descripcion }}</p>
+          <p><strong>Intensidad:</strong> {{ curso.intensidad }}</p>
         </div>
+
+        <!-- Contenedor 2 -->
+        <div class="p-3 rounded border border-warning bg-light shadow-sm">
+          <p><strong>Duración:</strong> {{ curso.duracion }}</p>
+          <p><strong>Categoría:</strong> {{ curso.categoria }}</p>
+          <p><strong>Requisitos:</strong> {{ curso.requisitos }}</p>
+          <p><strong>Instructor:</strong> {{ curso.instructor }}</p>
+          <p><strong>Cupos disponibles:</strong> {{ curso.cupos }}</p>
+          <p><strong>Ubicación:</strong> {{ curso.ubicacion }}</p>
+
+          <ng-container *ngIf="curso?.horarios?.length > 0">
+            <p><strong>Horarios:</strong></p>
+            <ul class="mb-2">
+              <li *ngFor="let horario of curso.horarios">{{ horario }}</li>
+            </ul>
+          </ng-container>
+
+          <ng-container *ngIf="curso?.beneficios?.length > 0">
+            <p><strong>Beneficios:</strong></p>
+            <ul>
+              <li *ngFor="let beneficio of curso.beneficios">{{ beneficio }}</li>
+            </ul>
+          </ng-container>
+        </div>
+      </div>
+
+      <!-- Lado derecho: Carrusel -->
+      <div class="col-md-6">
+        <div id="cursoCarousel" class="carousel slide rounded overflow-hidden shadow" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img [src]="curso.imagen" class="d-block w-100 object-fit-cover" style="height: 400px;" alt="Imagen principal" />
+            </div>
+            <div class="carousel-item">
+              <img [src]="curso.imagenSecundaria || curso.imagen" class="d-block w-100 object-fit-cover" style="height: 400px;" alt="Imagen secundaria" />
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#cursoCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#cursoCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+          </button>
+        </div>
+      </div>
     </div>
+
+    <div class="mt-4 text-start">
+  <button (click)="goBack()" class="btn btn-yellow-custom shadow-sm px-4 py-2 fw-bold">
+    Regresar a Cursos
+  </button>
+</div>
+
   } @else {
     <p class="loading-message">Cargando detalles del curso...</p>
-      <div>
-      <button mat-raised-button color="primary" (click)="goBack() " class="back-button">
-      Regresar a Cursos
+    <div>
+      <button mat-raised-button color="primary" (click)="goBack()" class="back-button">
+        Regresar a Cursos
       </button>
-      </div>
+    </div>
   }
+</div>
+
+<app-galeria></app-galeria>
+
 </div>

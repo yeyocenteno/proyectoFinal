@@ -9,6 +9,8 @@ export interface Curso {
   duracion: string;
   intensidad: string;
   imagen: string;
+  imagenSecundaria?: string;
+
 
   categoria?: string;
   requisitos?: string;
