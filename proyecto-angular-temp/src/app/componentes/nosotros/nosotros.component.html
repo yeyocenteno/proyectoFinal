@@ -16,7 +16,7 @@
     }
   </div>
 </section>
-
+@if(currentUserEmail){
 <form (ngSubmit)="onSubmit()" #formulario="ngForm" class="form-container" novalidate>
     <fieldset>
       <legend class="form-legend">Inserta tu queja</legend>
@@ -133,4 +133,9 @@
 
   </fieldset>
 </form>
+} @else {
+  <div class="alert alert-warning mt-5 text-center">
+    Debes iniciar sesión para enviar una queja.
+  </div>
+}
 </div>

@@ -4,6 +4,8 @@ import Swal from 'sweetalert2';
 import { Queja } from '../queja.interface';
 import { CommonModule } from '@angular/common';
 import { EquipoService, Integrante } from '../equipo.service';
+import { AuthService } from '../../services/auth.service';
+import { Firestore, collection,addDoc } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-nosotros',
@@ -13,6 +15,7 @@ import { EquipoService, Integrante } from '../equipo.service';
   styleUrl: './nosotros.component.css'
 })
 export class NosotrosComponent {
+  currentUserEmail: string | null = null;
   integrantes: Integrante[] = [];
   queja: Queja = {
     nombre: '',
@@ -30,9 +33,14 @@ export class NosotrosComponent {
   indiceEditando = -1;
 
 
-  constructor(private equipoService: EquipoService) {}
+  constructor(private equipoService: EquipoService, private authService: AuthService, private firestore: Firestore) {}
 
   ngOnInit(): void {
+    
+    this.authService.user$.subscribe(user => {
+    this.currentUserEmail = user?.email || null;
+  });
+
   this.integrantes = this.equipoService.getIntegrantes();
 
   const registro = localStorage.getItem('registroEditando');
@@ -86,37 +94,43 @@ esFechaEnRangoValido(): boolean {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   }
 
-    onSubmit() {
+   async onSubmit() {
   this.submitted = true;
+
   if (this.isValid()) {
-    const quejasGuardadas = JSON.parse(localStorage.getItem('quejas') || '[]');
-    if (this.editando && this.indiceEditando > -1) {
-      quejasGuardadas[this.indiceEditando] = this.queja;
-    } else {
-      quejasGuardadas.push(this.queja);
+    try {
+      const quejaConFecha = {
+        ...this.queja,
+        fechaRegistro: new Date().toISOString(),
+      };
+
+      await addDoc(collection(this.firestore, 'quejas'), quejaConFecha);
+
+      Swal.fire({
+        icon: 'success',
+        title: this.editando ? '¡Queja actualizada!' : '¡Queja registrada!',
+        text: 'Gracias por compartir tu opinión. Trabajaremos en ello.',
+      });
+
+      this.queja = {
+        nombre: '',
+        correo: '',
+        motivo: '',
+        fecha: '',
+        opciones: [],
+        gravedad: ''
+      };
+      this.submitted = false;
+      this.editando = false;
+      this.indiceEditando = -1;
+    } catch (error) {
+      console.error('Error al guardar la queja en Firestore:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'No se pudo enviar la queja. Intenta más tarde.',
+      });
     }
-    localStorage.setItem('quejas', JSON.stringify(quejasGuardadas));
-    localStorage.removeItem('registroEditando');
-
-    Swal.fire({
-      icon: 'success',
-      title: this.editando ? '¡Queja actualizada!' : '¡Queja registrada!',
-      text: this.editando
-        ? 'Tu queja ha sido actualizada correctamente.'
-        : 'Gracias por compartir tu opinión. Trabajaremos en ello.',
-    });
-
-    this.queja = {
-      nombre: '',
-      correo: '',
-      motivo: '',
-      fecha: '',
-      opciones: [],
-      gravedad: ''
-    };
-    this.submitted = false;
-    this.editando = false;
-    this.indiceEditando = -1;
   }
 }
 

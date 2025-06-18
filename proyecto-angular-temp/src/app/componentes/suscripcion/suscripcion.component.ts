@@ -5,6 +5,9 @@ import { AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule
 import { RouterOutlet } from '@angular/router';
 import { PlanesComponent } from '../planes/planes.component';
 import { DomseguroPipe } from '../domseguro.pipe';
+import { AuthService } from '../../services/auth.service';
+import { Firestore } from '@angular/fire/firestore';
+import { addDoc, collection } from 'firebase/firestore';
 
 @Component({
   selector: 'app-suscripcion',
@@ -19,10 +22,11 @@ export class SuscripcionComponent {
   editando = false;
   hovering = false;
   video:string="I_RYujJvZ7s"; // videoo
+  currentUserEmail: string | null = null;
 
 indiceEditando = -1;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private firestore: Firestore) {
     const fechaMinima = new Date();
     this.suscripcionForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.minLength(3)]],
@@ -38,6 +42,10 @@ indiceEditando = -1;
   }
 
 ngOnInit() {
+  this.authService.user$.subscribe(user => {
+    this.currentUserEmail = user?.email || null;
+  });
+
   const registro = localStorage.getItem('registroEditando');
   if (registro) {
     const { tipo, index } = JSON.parse(registro);
@@ -90,30 +98,51 @@ ngOnInit() {
   get objetivosFormArray() {
     return this.suscripcionForm.get('objetivos') as FormArray;
   }
-onSubmit() {
-  if (this.suscripcionForm.valid) {
-    const suscripciones = JSON.parse(localStorage.getItem('suscripciones') || '[]');
-    if (this.editando && this.indiceEditando > -1) {
-      suscripciones[this.indiceEditando] = this.suscripcionForm.value;
-    } else {
-      suscripciones.push(this.suscripcionForm.value);
-    }
-    localStorage.setItem('suscripciones', JSON.stringify(suscripciones));
-    localStorage.removeItem('registroEditando');
-
+async onSubmit() {
+  console.log('submit!'); // <-- para debug
+  if (!this.currentUserEmail) {
     Swal.fire({
-      icon: 'success',
-      title: this.editando ? '¡Registro actualizado!' : '¡Registro exitoso!',
-      text: this.editando
-        ? 'La suscripción ha sido actualizada correctamente.'
-        : 'Tu suscripción ha sido registrada correctamente.',
+      icon: 'warning',
+      title: 'Acceso denegado',
+      text: 'Debes iniciar sesión para enviar el formulario.'
     });
-    this.suscripcionForm.reset();
-    this.editando = false;
-    this.indiceEditando = -1;
+    return;
   }
 
+  if (this.suscripcionForm.valid) {
+    try {
+      const data = {
+        ...this.suscripcionForm.value,
+        emailUsuario: this.currentUserEmail,
+        fechaRegistro: new Date()
+      };
+
+      const suscripcionesRef = collection(this.firestore, 'suscripciones');
+      await addDoc(suscripcionesRef, data);
+
+      Swal.fire({
+        icon: 'success',
+        title: this.editando ? '¡Registro actualizado!' : '¡Registro exitoso!',
+        text: this.editando
+          ? 'La suscripción ha sido actualizada correctamente.'
+          : 'Tu suscripción ha sido registrada correctamente.'
+      });
+
+      this.suscripcionForm.reset();
+      this.editando = false;
+      this.indiceEditando = -1;
+
+    } catch (error) {
+      console.error('Error al guardar en Firestore', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Ocurrió un error al guardar la suscripción. Inténtalo de nuevo.'
+      });
+    }
+  }
 }
+
 
 
 fechaRangoValida(control: AbstractControl): ValidationErrors | null {

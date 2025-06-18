@@ -5,56 +5,63 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
+import { User } from 'firebase/auth';
+import { RegistroComponent } from '../registro/registro.component';
 declare var bootstrap: any;
 @Component({
   selector: 'app-navbar',
   standalone:true,
-  imports: [MatButtonModule,MatMenuModule,RouterModule,CommonModule,FormsModule],
+  imports: [MatButtonModule,MatMenuModule,RouterModule,CommonModule,FormsModule,RegistroComponent],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
-  admin = { username: '', password: '' };
-  currentAdmin: { username: string, nombre: string } | null = null;
+  loginForm = { email: '', password: '' };
   loginError = false;
+  currentUser: User | null = null;
+  mostrarRegistro = false;
 
-  validAdmins = [
-    { username: 'admin1', password: 'admin123', nombre: 'Jaime López' },
-    { username: 'admin2', password: 'clave456', nombre: 'Ricardo Almada' },
-    { username: 'entrenador', password: 'fit789', nombre: 'Diego Saldaña' }
-  ];
+  constructor(private authService: AuthService) {
+    this.authService.user$.subscribe(user => {
+      this.currentUser = user;
+    });
+  }
+
+  alternarVistaRegistro() {
+    this.mostrarRegistro = !this.mostrarRegistro;
+  }
 
   login() {
-    const found = this.validAdmins.find(
-      user => user.username === this.admin.username && user.password === this.admin.password
-    );
-
-    if (found) {
-      this.currentAdmin = { username: found.username, nombre: found.nombre };
-      this.loginError = false;
-
-      Swal.fire({
-        icon: 'success',
-        title: '¡Inicio de sesión exitoso!',
-        text: `Bienvenido, ${found.nombre}`
-      }).then(() => {
-        const modalElement = document.getElementById('adminLoginModal');
-        if (modalElement) {
-          const modalInstance = bootstrap.Modal.getInstance(modalElement);
-          modalInstance?.hide();
-        }
+    const { email, password } = this.loginForm;
+    this.authService.login(email, password)
+      .then(result => {
+        Swal.fire({
+          icon: 'success',
+          title: '¡Inicio de sesión exitoso!',
+          text: `Bienvenido, ${result.user.email}`
+        }).then(() => {
+          const modalElement = document.getElementById('adminLoginModal');
+          if (modalElement) {
+            const modalInstance = bootstrap.Modal.getInstance(modalElement);
+            modalInstance?.hide();
+          }
+        });
+        this.loginError = false;
+      })
+      .catch(error => {
+        this.loginError = true;
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al iniciar sesión',
+          text: error.message
+        });
       });
-    } else {
-      this.loginError = true;
-    }
   }
 
   logout() {
-    this.currentAdmin = null;
-    Swal.fire({
-      icon: 'info',
-      title: 'Sesión cerrada',
-      text: 'Has cerrado la sesión exitosamente.'
+    this.authService.logout().then(() => {
+      Swal.fire('Sesión cerrada', 'Has cerrado sesión exitosamente.', 'info');
     });
   }
 }

@@ -4,6 +4,7 @@
   </div>
   <div class="contenedor">
   <div class="formulario">
+    @if (currentUserEmail){
     <form [formGroup]="suscripcionForm" (ngSubmit)="onSubmit()" class="form-container">
       
       <div class="form-group">
@@ -98,13 +99,19 @@
 
       </div>
 
-      <button type="submit"
-              [disabled]="suscripcionForm.invalid"
-              (mouseenter)="hovering = true"
-            >
+      <button
+        type="submit"
+        [disabled]="suscripcionForm.invalid"
+        (mouseenter)="hovering = true"
+      >
         {{ editando ? 'Actualizar suscripción' : 'Suscribirse' }}
       </button>
     </form>
+    } @else {
+      <div class="alert alert-warning mt-5 text-center">
+    <h4>⚠️ Debes iniciar sesión para suscribirte.</h4>
+    <p>Por favor, inicia sesión desde el menú superior.</p>
+  </div>} 
   </div>
 <br><br><br>
 
