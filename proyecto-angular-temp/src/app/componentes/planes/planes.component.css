@@ -35,3 +35,9 @@ h5{
     border: none;
    background-color: #f5f3f3;
 }
+
+.plan-card:hover {
+  transform: translateY(-5px);
+  transition: transform 0.3s ease;
+  box-shadow: 0 8px 24px rgba(255, 193, 7, 0.2);
+}

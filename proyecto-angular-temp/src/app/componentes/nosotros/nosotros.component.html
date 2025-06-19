@@ -18,121 +18,158 @@
 </section>
 @if(currentUserEmail){
 <form (ngSubmit)="onSubmit()" #formulario="ngForm" class="form-container" novalidate>
-    <fieldset>
-      <legend class="form-legend">Inserta tu queja</legend>
+  <fieldset class="p-4 bg-dark bg-opacity-75 rounded-3 border border-warning">
+    <legend class="form-legend text-warning fw-bold mb-4">Inserta tu queja</legend>
 
-      <!-- Nombre -->
-      <div class="mb-3">
-        <label for="nombre" class="form-label">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" class="form-control"
-              required minlength="10" [(ngModel)]="queja.nombre" #nombre="ngModel">
-        @if ((nombre.dirty || submitted) && nombre.errors?.['minlength']) {
-          <div class="text-danger mt-2">
-            El nombre debe tener al menos 10 caracteres.
-          </div>
-        }
-        @if ((nombre.dirty || submitted) && nombre.errors?.['required']) {
-          <div class="text-danger mt-2">
-            El nombre es obligatorio.
-          </div>
-        }
-      </div>
+    <!-- Nombre -->
+    <div class="mb-3">
+      <label for="nombre" class="form-label text-warning">Nombre:</label>
+      <input
+        type="text"
+        id="nombre"
+        name="nombre"
+        class="form-control form-control-lg bg-secondary bg-opacity-25 border-0 text-white rounded-pill"
+        required minlength="10"
+        [(ngModel)]="queja.nombre"
+        #nombre="ngModel"
+        placeholder="Tu nombre completo"
+      />
+      @if ((nombre.dirty || submitted) && nombre.errors?.['minlength']) {
+        <small class="text-warning">
+          El nombre debe tener al menos 10 caracteres.
+        </small>
+      }
+      @if ((nombre.dirty || submitted) && nombre.errors?.['required']) {
+        <small class="text-warning">
+          El nombre es obligatorio.
+        </small>
+      }
+    </div>
 
-      <!-- Correo -->
-      <div class="mb-3">
-        <label for="correo" class="form-label">Correo electrónico:</label>
-        <input type="email" id="correo" name="correo" class="form-control"
-              required [(ngModel)]="queja.correo" #correo="ngModel">
-        @if ((correo.dirty || submitted) && correo.errors?.['required']) {
-          <div class="text-danger mt-2">
-            El correo electrónico es obligatorio.
-          </div>
-        }
-        @if ((correo.dirty || submitted) && correo.value && !validateEmail(correo.value)) {
-          <div class="text-danger mt-2">
-            El correo electrónico no es válido.
-          </div>
-        }
-      </div>
+    <!-- Correo -->
+    <div class="mb-3">
+      <label for="correo" class="form-label text-warning">Correo electrónico:</label>
+      <input
+        type="email"
+        id="correo"
+        name="correo"
+        class="form-control form-control-lg bg-secondary bg-opacity-25 border-0 text-white rounded-pill"
+        required
+        [(ngModel)]="queja.correo"
+        #correo="ngModel"
+        placeholder="tu@correo.com"
+      />
+      @if ((correo.dirty || submitted) && correo.errors?.['required']) {
+        <small class="text-warning">El correo electrónico es obligatorio.</small>
+      }
+      @if ((correo.dirty || submitted) && correo.value && !validateEmail(correo.value)) {
+        <small class="text-warning">El correo electrónico no es válido.</small>
+      }
+    </div>
 
-      <!-- Fecha -->
-      <div class="mb-3">
-        <label for="fecha" class="form-label">Fecha del evento:</label>
-        <input type="date" id="fecha" name="fecha" class="form-control"
-              required [(ngModel)]="queja.fecha" #fecha="ngModel"
-              [min]="hoy">
-        @if ((fecha.dirty || submitted) && fecha.errors?.['required']) {
-          <div class="text-danger mt-2">
-            La fecha es obligatoria.
-          </div>
-        }
-        @if ((fecha.dirty || submitted) && !esFechaEnRangoValido()) {
-  <div class="text-danger mt-2">
-    La fecha no puede ser mayor a 10 días después de hoy.
-  </div>
-}
+    <!-- Fecha -->
+    <div class="mb-3">
+      <label for="fecha" class="form-label text-warning">Fecha del evento:</label>
+      <input
+        type="date"
+        id="fecha"
+        name="fecha"
+        class="form-control form-control-lg bg-secondary bg-opacity-25 border-0 text-white rounded-pill"
+        required
+        [(ngModel)]="queja.fecha"
+        #fecha="ngModel"
+        [min]="hoy"
+      />
+      @if ((fecha.dirty || submitted) && fecha.errors?.['required']) {
+        <small class="text-warning">La fecha es obligatoria.</small>
+      }
+      @if ((fecha.dirty || submitted) && !esFechaEnRangoValido()) {
+        <small class="text-warning">
+          La fecha no puede ser mayor a 10 días después de hoy.
+        </small>
+      }
+    </div>
 
-      </div>
-
-      <!-- Mensaje -->
-      <div class="mb-3">
-        <label for="motivo" class="form-label">Mensaje:</label>
-        <textarea id="motivo" name="motivo" class="form-control"
-                  required [(ngModel)]="queja.motivo" #mensaje="ngModel" minlength="10"></textarea>
-        @if ((mensaje.dirty || submitted) && mensaje.errors?.['minlength']) {
-          <div class="text-danger mt-2">
-            El mensaje debe tener al menos 10 caracteres.
-          </div>
-        }
-        @if ((mensaje.dirty || submitted) && mensaje.errors?.['required']) {
-          <div class="text-danger mt-2">
-            El mensaje es obligatorio.
-          </div>
-        }
-      </div>
+    <!-- Mensaje -->
+    <div class="mb-3">
+      <label for="motivo" class="form-label text-warning">Mensaje:</label>
+      <textarea
+        id="motivo"
+        name="motivo"
+        class="form-control form-control-lg bg-secondary bg-opacity-25 border-0 text-white rounded"
+        required
+        [(ngModel)]="queja.motivo"
+        #mensaje="ngModel"
+        minlength="10"
+        placeholder="Describe tu queja"
+        rows="4"
+      ></textarea>
+      @if ((mensaje.dirty || submitted) && mensaje.errors?.['minlength']) {
+        <small class="text-warning">El mensaje debe tener al menos 10 caracteres.</small>
+      }
+      @if ((mensaje.dirty || submitted) && mensaje.errors?.['required']) {
+        <small class="text-warning">El mensaje es obligatorio.</small>
+      }
+    </div>
 
     <!-- Opciones (Checkboxes) -->
     <div class="mb-3">
-      <label class="form-label">Opciones relacionadas:</label>
-      @for (opcion of opcionesDisponibles; track opcion) {
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox"
-                 [checked]="queja.opciones.includes(opcion)"
-                 (change)="handleChange($event, opcion)"
-                 id="{{ opcion }}" />
-          <label class="form-check-label" [for]="opcion">{{ opcion }}</label>
-        </div>
-      }
+      <label class="form-label text-warning">Opciones relacionadas:</label>
+      <div class="d-flex flex-wrap gap-3">
+        @for (opcion of opcionesDisponibles; track opcion) {
+          <div class="form-check text-warning">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              [checked]="queja.opciones.includes(opcion)"
+              (change)="handleChange($event, opcion)"
+              id="{{ opcion }}"
+            />
+            <label class="form-check-label" [for]="opcion">{{ opcion }}</label>
+          </div>
+        }
+      </div>
       @if (submitted && !tieneOpcionesSeleccionadas()) {
-        <div class="text-danger mt-2">Selecciona al menos una opción.</div>
+        <small class="text-warning d-block mt-2">Selecciona al menos una opción.</small>
       }
     </div>
 
     <!-- Radio Buttons -->
     <div class="mb-3">
-      <label class="form-label">Nivel de gravedad:</label>
-      @for (nivel of ['Baja', 'Media', 'Alta']; track nivel) {
-        <div class="form-check">
-          <input type="radio" name="gravedad" [(ngModel)]="queja.gravedad"
-                 [value]="nivel" [id]="nivel" class="form-check-input" />
-          <label class="form-check-label" [for]="nivel">{{ nivel }}</label>
-        </div>
-      }
+      <label class="form-label text-warning">Nivel de gravedad:</label>
+      <div class="d-flex gap-3">
+        @for (nivel of ['Baja', 'Media', 'Alta']; track nivel) {
+          <div class="form-check text-warning">
+            <input
+              type="radio"
+              name="gravedad"
+              [(ngModel)]="queja.gravedad"
+              [value]="nivel"
+              [id]="nivel"
+              class="form-check-input"
+            />
+            <label class="form-check-label" [for]="nivel">{{ nivel }}</label>
+          </div>
+        }
+      </div>
       @if (submitted && queja.gravedad === '') {
-        <div class="text-danger mt-2">Selecciona un nivel de gravedad.</div>
+        <small class="text-warning d-block mt-2">Selecciona un nivel de gravedad.</small>
       }
     </div>
 
     <!-- Botón de Envío -->
-    <button type="submit"
-        [disabled]="!formulario.form.valid || !isValid()"
-        (mouseenter)="submitted = true">
-  {{ editando ? 'Actualizar Queja' : 'Enviar Queja' }}
-</button>
-
-
+    <button
+      type="submit"
+      [disabled]="!formulario.form.valid || !isValid()"
+      (mouseenter)="submitted = true"
+      class="btn btn-warning btn-lg w-100 fw-bold rounded-pill"
+    >
+      {{ editando ? 'Actualizar Queja' : 'Enviar Queja' }}
+    </button>
   </fieldset>
 </form>
+
+
 } @else {
   <div class="alert alert-warning mt-5 text-center">
     Debes iniciar sesión para enviar una queja.

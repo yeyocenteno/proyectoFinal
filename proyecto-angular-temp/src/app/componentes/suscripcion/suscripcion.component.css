@@ -1,95 +1,42 @@
 /* Estilos generales */
-body, html {
-  margin: 0;
-  padding: 0;
-  background-color: #fafafa;
-  font-family: Arial, sans-serif;
-  height: 100%;
-}
 .seccion{
-    background-image: url("/assets/fondocards.svg");
+    background-image: url("/assets/rejilla.svg");
     background-size: cover;
     background-repeat: no-repeat;
-}
-.planes{
-  background: local;
 }
 .formulario {
   background: local;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  height: 80vh;
 }
-
-
-/* Contenedor del formulario */
-.form-container {
-  background-color: #e6dfdf;
-  color: #2973B2;
-  padding: 40px;
-  border-radius: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  max-width: 500px;
-  width: 90%;
-  text-shadow: 1px 1px 2px rgba(184, 182, 182, 0.7);
-}
-
-/* Grupos de formulario */
-.form-group {
-  margin-bottom: 20px;
-}
-
-/* Inputs y select */
-input[type="text"],
-input[type="email"],
-input[type="date"],
-select {
+.formulario {
+  max-width: 730px;
   width: 100%;
-  padding: 10px;
-  margin-top: 5px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  font-size: 16px;
 }
 
-/* Checkbox y radio */
-input[type="checkbox"],
-input[type="radio"] {
-  margin-right: 10px;
+.form-control, .form-select {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: #fff !important;
+  border-radius: .75rem;
 }
 
-/* Etiquetas */
-label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 5px;
+.form-control::placeholder {
+  color: rgba(255, 255, 255, 0.7);
 }
 
-/* Botón */
-button[type="submit"] {
-  background-color: #2973B2;
-  color: white;
+.btn-warning {
+  background-color: #ffc107;
   border: none;
-  padding: 12px 20px;
-  font-size: 16px;
-  border-radius: 10px;
-  cursor: pointer;
-  width: 100%;
-  margin-top: 20px;
-  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
 }
 
-button[type="submit"]:disabled {
-  background-color: #9bbad7;
-  cursor: not-allowed;
+.btn-warning:disabled {
+  opacity: 0.6;
 }
 
-/* Mensajes de error */
-.error {
-  color: red;
-  font-size: 14px;
-  margin-top: 5px;
+.btn-warning:not(:disabled):hover {
+  background-color: #e0a800;
 }
 
 .video-container {
