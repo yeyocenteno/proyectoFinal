@@ -1,12 +1,20 @@
-.carousel-inner {
-  height: 50%;
+.carousel,
+.carousel-inner,
+.carousel-item,
+.carousel-item img {
+  height: 100vh;
+  width: 100%;
 }
+
 .carousel-item img {
   object-fit: cover;
+  object-position: center;
 }
+
 .text-shadow {
   text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
 }
+
 .slogan {
   font-size: 1.5rem;
   margin-top: 10px;
@@ -14,3 +22,14 @@
   color: #f0f0f0;
   letter-spacing: 1px;
 }
+
+@media (max-width: 768px) {
+  .display-3 {
+    font-size: 2rem;
+  }
+
+  .slogan {
+    font-size: 1.1rem;
+  }
+}
+

@@ -16,7 +16,7 @@ export interface Integrante {
 export class EquipoService {
   private integrantes: Integrante[] = [
     {
-      nombre: 'Ricardo Almada Díaz',
+      nombre: 'Tadeo Andrade Sustaita',
       id: '281466',
       edad: 20,
       foto: 'assets/ricardo.jpg',
@@ -32,7 +32,23 @@ export class EquipoService {
       semestre: '6° C'
     },
     {
-      nombre: 'Jaime López Martíenz',
+      nombre: 'Cindy Fabiola Hernandez Muñoz',
+      id: '347301',
+      edad: 20,
+      foto: 'assets/jaime.jpg',
+      carrera: 'Ing. en Sistemas Computacionales',
+      semestre: '6° C'
+    },
+    {
+      nombre: 'Reyli Uvaldo Martinez Hernandez',
+      id: '347301',
+      edad: 20,
+      foto: 'assets/jaime.jpg',
+      carrera: 'Ing. en Sistemas Computacionales',
+      semestre: '6° C'
+    },
+    {
+      nombre: 'Juan Carlos Uriarte PAdilla',
       id: '347301',
       edad: 20,
       foto: 'assets/jaime.jpg',

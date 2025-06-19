@@ -3,7 +3,7 @@
   <h2 class="text-center mb-4">Equipo de Desarrollo</h2>
   <div class="row justify-content-center">
     @for (integrante of integrantes; track integrante) {
-      <div class="card m-2 p-2" style="width: 18rem; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+      <div class="card m-2 p-3" style="width: 18rem; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
         <img [src]="integrante.foto" class="card-img-top" alt="{{ integrante.nombre }}">
         <div class="card-body">
           <h5 class="card-title">{{ integrante.nombre }}</h5>

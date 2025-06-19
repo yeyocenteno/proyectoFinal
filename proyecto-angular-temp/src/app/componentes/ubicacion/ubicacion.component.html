@@ -1,21 +1,29 @@
+
 <!-- Leaflet CSS -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
 <div class="container py-5">
-  <div class="row align-items-stretch shadow rounded overflow-hidden">
-    <div class="col-md-6 p-0">
-      <div id="map" style="height: 100%; min-height: 400px;"></div>
+  <div class="row g-0 shadow-lg rounded-4 overflow-hidden">
+    <!-- Mapa -->
+    <div class="col-md-6">
+      <div id="map" class="w-100 h-100" style="min-height: 400px;"></div>
     </div>
-    <div class="col-md-6 bg-light p-4 d-flex flex-column justify-content-center">
-      <h4 class="mb-3">Tu nuevo hogar</h4>
-      <p>
-        Estamos ubicados en:
-        <br>
-        <strong>MERIDIAM PARK</strong><br>
-        AV. PASEO DE SAN GERARDO 111<br>
-        FRACCIONAMIENTO SAN GERARDO<br>
-        CP 20348, AGUASCALIENTES
+
+    <!-- Info ubicación -->
+    <div class="col-md-6 bg-dark text-white p-5 d-flex flex-column justify-content-center">
+      <h4 class="mb-3 display-6 fw-semibold">Conoce nuestras instalaciones</h4>
+      <p class="text-light mb-4">
+        Entrena en un espacio diseñado para inspirarte. Nuestro gimnasio está equipado con todo lo que necesitas para alcanzar tus objetivos.
       </p>
+      <div class="border-top pt-3">
+        <h6 class="text-warning mb-1">Estamos ubicados en:</h6>
+        <address class="mb-0 text-light">
+          <strong>MERIDIAM PARK</strong><br />
+          AV. PASEO DE SAN GERARDO 111<br />
+          FRACCIONAMIENTO SAN GERARDO<br />
+          CP 20348, AGUASCALIENTES
+        </address>
+      </div>
     </div>
   </div>
 </div>

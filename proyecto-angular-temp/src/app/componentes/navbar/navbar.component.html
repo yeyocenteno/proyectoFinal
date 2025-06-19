@@ -1,6 +1,8 @@
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#"><img src="GYMYL.png" height="50px"></a>
+    <a class="navbar-brand" href="#"><img src="logo.png" height="50px"></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
       data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
       aria-expanded="false" aria-label="Toggle navigation">
@@ -25,44 +27,44 @@
 
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
         @if (currentUser) {
-          <li class="nav-item d-flex align-items-center me-3">
-            <span class="fw-bold text-success">👤 {{ currentUser?.email }}</span>
-          </li>
-          <li class="nav-item">
-            <button class="btn btn-outline-danger btn-sm" (click)="logout()" routerLink="/inicio">Logout</button>
-          </li>
+          <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle p-0" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="assets/profile-placeholder.jpg" alt="Perfil" class="rounded-circle" width="40" height="40" style="cursor:pointer;">
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+            <li> <span class="dropdown-item-text d-flex align-items-center" style="gap: 6px;">
+      <span>👤</span> {{ username }}
+    </span></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><button class="dropdown-item" (click)="logout()">Cerrar sesión</button></li>
+            <a class="nav-link d-flex align-items-center" routerLink="/tablas" title="Ir a Tablas" routerLinkActive="active">
+          <div style="display: flex; align-items: center;">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                width="24" height="24" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round"
+                style="margin-left: 16px; margin-right: 5px;">
+              <path d="M15 17h2" />
+              <path d="M3 5a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-14z" />
+              <path d="M11 12h6" />
+              <path d="M13 7h4" />
+            </svg>
+            <p style="margin: 0;">Consultar tablas.</p>
+          </div>
+        </a>
+          </ul>
+</li>
+
         } @else {
           <li class="nav-item">
-            <a class="nav-link fw-bold" href="#" data-bs-toggle="modal" data-bs-target="#adminLoginModal" style="color: #ffc107">Login</a>
+            <a class="btn btn-warning rounded-pill fw-semibold text-dark px-4" href="#" data-bs-toggle="modal" data-bs-target="#adminLoginModal" style="text-decoration: none;">
+              Login
+            </a>
           </li>
+          <span class="nav-link d-flex align-items-center text-muted" title="Inicia sesión para acceder" style="cursor: not-allowed;">
+        </span>
         }
       </ul>
-      
-      @if (currentUser) {
-        <a class="nav-link d-flex align-items-center" routerLink="/tablas" title="Ir a Tablas" routerLinkActive="active">
-          <svg xmlns="http://www.w3.org/2000/svg"
-              width="24" height="24" viewBox="0 0 24 24"
-              fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round">
-            <path d="M15 17h2" />
-            <path d="M3 5a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-14z" />
-            <path d="M11 12h6" />
-            <path d="M13 7h4" />
-          </svg>
-        </a>
-      } @else {
-        <span class="nav-link d-flex align-items-center text-muted" title="Inicia sesión para acceder" style="cursor: not-allowed;">
-          <svg xmlns="http://www.w3.org/2000/svg"
-              width="24" height="24" viewBox="0 0 24 24"
-              fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round">
-            <path d="M15 17h2" />
-            <path d="M3 5a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-14z" />
-            <path d="M11 12h6" />
-            <path d="M13 7h4" />
-          </svg>
-        </span>
-      }
     </div>
   </div>
 </nav>

@@ -75,6 +75,11 @@ export class NavbarComponent {
     });
 }
 
+  get username(): string {
+  if (!this.currentUser || !this.currentUser.email) return '';
+  return this.currentUser.email.split('@')[0];
+}
+
 
   logout() {
     this.authService.logout().then(() => {
