@@ -2,6 +2,14 @@
 <app-busqueda (searchChanged)="busqueda($event)"></app-busqueda>
 
 <div class="cursos-container mt-5">
+  @if(loading){
+    <div class="loading-overlay">
+    <div class="spinner-border text-warning" role="status">
+        <span class="visually-hidden">Cargando cursos...</span>
+      </div>
+      <p class="text-light mt-3">Cargando cursos, por favor espera...</p>
+      </div>
+  }@else{
   @if (cursosFiltrados.length > 0) {
     <div class="grid-container">
       @for (curso of cursosFiltrados; track curso.id) {
@@ -22,7 +30,7 @@
     </div>
   } @else {
     <p class="loading-message">No se encontraron cursos con ese nombre.</p>
-  }
+  }}
 </div>
 
 </div>

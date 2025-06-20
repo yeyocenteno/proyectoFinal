@@ -14,16 +14,21 @@ import { BusquedaComponent } from '../busqueda/busqueda.component';
 export class CursoComponent implements OnInit {
   cursos: Curso[] = [];
   cursosFiltrados: Curso[] = []; // Nombre actualizado para que coincida con el HTML
+  loading = false; // bandera de carga
 
   constructor(private cursoService: CursoService) {}
 
   ngOnInit(): void {
+    this.loading = true; // comienza la carga
     this.cursoService.obtenerCursos().subscribe({
       next: (data) => {
         this.cursos = data;
         this.cursosFiltrados = data;
+        this.loading = false;
       },
-      error: (err) => console.error('Error al obtener cursos', err)
+      error: (err) => {console.error('Error al obtener cursos', err);
+      this.loading = false;
+      }
     });
   }
 

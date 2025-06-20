@@ -21,6 +21,7 @@
     "@angular/platform-browser-dynamic": "^19.2.14",
     "@angular/router": "^19.2.14",
     "@angular/service-worker": "^19.2.14",
+    "@paypal/paypal-server-sdk": "^1.0.0",
     "angular-cli-ghpages": "^2.0.3",
     "aos": "^2.3.4",
     "bootstrap": "^5.3.5",

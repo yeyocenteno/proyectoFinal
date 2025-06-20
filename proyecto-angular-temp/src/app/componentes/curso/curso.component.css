@@ -76,3 +76,12 @@
   .contenedor{
     margin: 40px;
   }
+  
+  .loading-overlay {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh; /* o 100vh si quieres que ocupe toda la pantalla */
+  text-align: center;
+}

@@ -43,7 +43,7 @@
             }
           </div>
 
-          <div class="mb-3">
+          <div class="mb-3" formArrayName="objetivos">
             <label class="form-label text-white">Objetivos:</label>
             <div class="d-flex flex-wrap gap-3">
               @for (objetivo of objetivos; let i = $index; track objetivo) {
@@ -57,6 +57,7 @@
               <small class="text-danger">Selecciona al menos un objetivo.</small>
             }
           </div>
+
 
           <div class="mb-3">
             <label class="form-label text-white">Género:</label>
@@ -91,6 +92,11 @@
                   (mouseenter)="hovering = true">
             {{ editando ? 'Actualizar suscripción' : 'Suscribirse' }}
           </button>
+          <div *ngIf="suscripcionForm.valid && currentUserEmail" class="mt-4 text-center">
+            <h5 class="text-light mb-2">Simular pago con PayPal</h5>
+            <div id="paypal-button-container"></div>
+          </div>
+
         </form>
       } @else {
         <div class="alert alert-warning text-center">
