@@ -26,18 +26,44 @@ export class NavbarComponent {
   voz = new SpeechSynthesisUtterance();
   mainText = '';
   modoContraste = false;
-
+  deferredPrompt: any;
+  showInstallButton = false;
+  
   constructor(private authService: AuthService) {
     this.authService.user$.subscribe(user => {
       this.currentUser = user;
     });
   }
 
+  ngOnInit(): void {
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault(); // Evitar que el navegador muestre el prompt por defecto
+      this.deferredPrompt = e; // Guardar el evento para lanzarlo luego
+      this.showInstallButton = true; // Mostrar botón de instalación en UI
+    });
+  }
+
+  instalarApp() {
+    if (!this.deferredPrompt) {
+      return;
+    }
+    this.deferredPrompt.prompt(); // Mostrar prompt de instalación
+    this.deferredPrompt.userChoice.then((choiceResult: any) => {
+      if (choiceResult.outcome === 'accepted') {
+        console.log('Usuario aceptó la instalación');
+      } else {
+        console.log('Usuario rechazó la instalación');
+      }
+      this.deferredPrompt = null;
+      this.showInstallButton = false;
+    });
+  }
+  
   alternarVistaRegistro() {
     this.mostrarRegistro = !this.mostrarRegistro;
   }
 
- login() {
+  login() {
   const captchaResponse = (window as any).grecaptcha?.getResponse();
   
   if (!captchaResponse) {
@@ -50,7 +76,7 @@ export class NavbarComponent {
   }
 
   const { email, password } = this.loginForm;
-
+  
   this.authService.login(email, password)
     .then(result => {
       Swal.fire({

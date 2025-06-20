@@ -23,9 +23,18 @@
         <li class="nav-item">
           <a class="nav-link px-3 py-2 rounded-pill" routerLink="/suscripcion" routerLinkActive="active">Suscripción</a>
         </li>
+        <button 
+          *ngIf="showInstallButton" 
+          (click)="instalarApp()" 
+          class="btn btn-sm rounded-pill btn-silver"
+          style="font-weight: 500; margin-top: 1px;"
+        >
+          Instalar App
+        </button>
       </ul>
 
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+
         <button class="btn btn-outline-light ms-2" (click)="togglePanel()">
           <i class="fas fa-universal-access"></i>
         </button>

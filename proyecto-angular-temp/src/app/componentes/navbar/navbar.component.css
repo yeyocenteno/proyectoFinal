@@ -50,3 +50,7 @@
 input[type="range"] {
   accent-color: #ffc107; /* amarillo Bootstrap */
 }
+button.btn-silver:hover {
+  background-color: #bfbfbf; /* un gris un poco más oscuro */
+  color: black;
+}
