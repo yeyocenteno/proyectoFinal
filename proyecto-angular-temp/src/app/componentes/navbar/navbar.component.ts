@@ -21,6 +21,11 @@ export class NavbarComponent {
   loginError = false;
   currentUser: User | null = null;
   mostrarRegistro = false;
+  mostrarPanel = false;
+  sintesis = window.speechSynthesis;
+  voz = new SpeechSynthesisUtterance();
+  mainText = '';
+  modoContraste = false;
 
   constructor(private authService: AuthService) {
     this.authService.user$.subscribe(user => {
@@ -86,4 +91,45 @@ export class NavbarComponent {
       Swal.fire('Sesión cerrada', 'Has cerrado sesión exitosamente.', 'info');
     });
   }
+
+  togglePanel() {
+  this.mostrarPanel = !this.mostrarPanel;
+}
+
+iniciarLectura() {
+  const texto = document.body.innerText; // o un selector específico como .contenido-principal
+  const mensaje = new SpeechSynthesisUtterance(texto);
+  speechSynthesis.speak(mensaje);
+}
+
+pausarLectura() {
+  this.sintesis.pause();
+}
+
+detenerLectura() {
+  this.sintesis.cancel();
+}
+toggleContraste() {
+  this.modoContraste = !this.modoContraste;
+  const body = document.body;
+
+  if (this.modoContraste) {
+    console.log('Activando modo contraste');
+    body.classList.add('modo-contraste');
+  } else {
+    body.classList.remove('modo-contraste');
+  }
+}
+
+  tamanoFuente: number = 100;
+
+cambiarTamanoTexto() {
+  document.body.style.fontSize = `${this.tamanoFuente}%`;
+}
+cambiarFuente(event: Event) {
+  const selectElement = event.target as HTMLSelectElement;
+  const valor = selectElement.value;
+  document.body.style.fontFamily = valor;
+}
+
 }

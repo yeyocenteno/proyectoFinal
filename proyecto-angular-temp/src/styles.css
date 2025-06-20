@@ -4,3 +4,19 @@ body { margin: 0;
 font-family: Montserrat; }
 
 
+.modo-contraste {
+  background-color: #000 !important;
+  color: #ff0 !important;
+}
+
+.modo-contraste a,
+.modo-contraste h1,
+.modo-contraste h2,
+.modo-contraste h3,
+.modo-contraste p,
+.modo-contraste label,
+.modo-contraste .btn {
+  color: #ff0 !important;
+  background-color: #000 !important;
+  border-color: #ff0 !important;
+}

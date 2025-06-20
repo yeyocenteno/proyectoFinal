@@ -8,6 +8,8 @@ import { DomseguroPipe } from '../domseguro.pipe';
 import { AuthService } from '../../services/auth.service';
 import { Firestore } from '@angular/fire/firestore';
 import { addDoc, collection } from 'firebase/firestore';
+import { AfterViewChecked } from '@angular/core';
+declare var paypal: any;
 
 @Component({
   selector: 'app-suscripcion',
@@ -15,7 +17,8 @@ import { addDoc, collection } from 'firebase/firestore';
   templateUrl: './suscripcion.component.html',
   styleUrl: './suscripcion.component.css'
 })
-export class SuscripcionComponent {
+export class SuscripcionComponent implements AfterViewChecked {
+  private paypalRendered = false;
   suscripcionForm: FormGroup;
   planes = ['Básico', 'Intermedio', 'Avanzado'];
   objetivos = ['Perder peso', 'Ganar masa muscular', 'Mantener condición'];
@@ -72,8 +75,62 @@ ngOnInit() {
   }
 }
 
+  ngAfterViewChecked(): void {
+    const isVisible = this.suscripcionForm.valid && this.currentUserEmail;
+    const container = document.getElementById('paypal-button-container');
 
+    if (isVisible && container && !this.paypalRendered) {
+      this.renderPayPalButton();
+      this.paypalRendered = true;
+    }
+  }
   
+renderPayPalButton() {
+  const container = document.getElementById('paypal-button-container');
+  if (!paypal || !container) {
+    console.error('PayPal SDK no cargado o contenedor no encontrado');
+    return;
+  }
+
+  container.innerHTML = ''; // Limpia botón anterior si hay
+
+  paypal.Buttons({
+    style: {
+      shape: "pill",
+      layout: "vertical",
+      color: "gold",
+      label: "paypal"
+    },
+    createOrder: (data: any, actions: any) => {
+      return actions.order.create({
+        purchase_units: [{
+          amount: {
+            value: "10.00" // cambia esto al monto de tu suscripción
+          }
+        }]
+      });
+    },
+    onApprove: async (data: any, actions: any) => {
+      const details = await actions.order.capture();
+      console.log("Pago completado:", details);
+
+      // Aquí puedes guardar en Firebase o mostrar SweetAlert:
+      Swal.fire({
+        icon: 'success',
+        title: 'Pago exitoso',
+        text: `Transacción ${details.status}: ${details.id}`
+      });
+    },
+    onError: (err: any) => {
+      console.error('Error en el pago:', err);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Ocurrió un error al procesar el pago.'
+      });
+    }
+  }).render('#paypal-button-container');
+}
 
   buildObjetivos(): FormArray {
     return this.fb.array(

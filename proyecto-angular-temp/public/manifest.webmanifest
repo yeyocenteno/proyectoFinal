@@ -1,9 +1,12 @@
 {
-  "name": "Gymmy Lopez",
+  "name": "Gym León",
   "short_name": "Gymmy",
+  "theme_color": "#0d6efd",
+  "background_color": "#ffffff",
   "display": "standalone",
   "scope": "./",
   "start_url": "./",
+  "description": "Aplicación web progresiva para gestión de gimnasio.",
   "icons": [
     {
       "src": "icons/icon-72x72.png",

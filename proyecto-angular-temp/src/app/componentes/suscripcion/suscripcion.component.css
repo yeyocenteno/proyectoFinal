@@ -9,11 +9,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 86vh;
+  min-height: 80vh;
 }
 .formulario {
   max-width: 730px;
-  width: 100%;
+  width: 90%;
 }
 
 .form-control, .form-select {

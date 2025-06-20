@@ -1,9 +1,9 @@
-<div class="main-container">
+<div class="main-container mt-5 mb-5">
 <section class="equipo-container mb-4">
   <h2 class="text-center mb-4">Equipo de Desarrollo</h2>
   <div class="row justify-content-center">
     @for (integrante of integrantes; track integrante) {
-      <div class="card m-2 p-3" style="width: 18rem; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+      <div class="card m-2 p-3" style="width: 14rem; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
         <img [src]="integrante.foto" class="card-img-top" alt="{{ integrante.nombre }}">
         <div class="card-body">
           <h5 class="card-title">{{ integrante.nombre }}</h5>
@@ -15,9 +15,13 @@
       </div>
     }
   </div>
+  <!-- Mensaje informativo sobre el equipo -->
+  <div class="text-center text-muted fst-italic px-3 my-3">
+    <p>Nuestro equipo de desarrollo está comprometido con la calidad y la innovación para brindarte la mejor experiencia en nuestro gimnasio.</p>
+  </div>
 </section>
 @if(currentUserEmail){
-<form (ngSubmit)="onSubmit()" #formulario="ngForm" class="form-container" novalidate>
+<form (ngSubmit)="onSubmit()" #formulario="ngForm" class="form-container mb-3" style="max-width: 700px;" novalidate>
   <fieldset class="p-4 bg-dark bg-opacity-75 rounded-3 border border-warning">
     <legend class="form-legend text-warning fw-bold mb-4">Inserta tu queja</legend>
 
@@ -28,7 +32,7 @@
         type="text"
         id="nombre"
         name="nombre"
-        class="form-control form-control-lg bg-secondary bg-opacity-25 border-0 text-white rounded-pill"
+        class="form-control bg-secondary bg-opacity-25 border-0 text-white rounded-pill"
         required minlength="10"
         [(ngModel)]="queja.nombre"
         #nombre="ngModel"
@@ -53,7 +57,7 @@
         type="email"
         id="correo"
         name="correo"
-        class="form-control form-control-lg bg-secondary bg-opacity-25 border-0 text-white rounded-pill"
+        class="form-control bg-secondary bg-opacity-25 border-0 text-white rounded-pill"
         required
         [(ngModel)]="queja.correo"
         #correo="ngModel"
@@ -74,7 +78,7 @@
         type="date"
         id="fecha"
         name="fecha"
-        class="form-control form-control-lg bg-secondary bg-opacity-25 border-0 text-white rounded-pill"
+        class="form-control bg-secondary bg-opacity-25 border-0 text-white rounded-pill"
         required
         [(ngModel)]="queja.fecha"
         #fecha="ngModel"
@@ -96,7 +100,7 @@
       <textarea
         id="motivo"
         name="motivo"
-        class="form-control form-control-lg bg-secondary bg-opacity-25 border-0 text-white rounded"
+        class="form-control bg-secondary bg-opacity-25 border-0 text-white rounded"
         required
         [(ngModel)]="queja.motivo"
         #mensaje="ngModel"
