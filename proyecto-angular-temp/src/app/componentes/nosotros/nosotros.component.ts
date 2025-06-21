@@ -103,7 +103,9 @@ esFechaEnRangoValido(): boolean {
         ...this.queja,
         fechaRegistro: new Date().toISOString(),
       };
-
+      
+      // Aquí está la llamada al API de Firestore que guarda el documento:
+      // addDoc recibe la referencia a la colección 'quejas' y el objeto que se guardará
       await addDoc(collection(this.firestore, 'quejas'), quejaConFecha);
 
       Swal.fire({

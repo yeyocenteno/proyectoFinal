@@ -5,6 +5,8 @@ import { NosotrosComponent } from './componentes/nosotros/nosotros.component';
 import { CursoComponent } from './componentes/curso/curso.component';
 import { TablasComponent } from './componentes/tablas/tablas.component';
 import { CursoDetalleComponent } from './componentes/curso-detalle/curso-detalle.component';
+import { StorageComponent } from './componentes/storage/storage.component';
+
 export const routes: Routes = [
   { path: '', component: HomeComponent }, 
  { path: 'curso/:id', component: CursoDetalleComponent},

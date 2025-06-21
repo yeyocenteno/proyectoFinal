@@ -12,6 +12,7 @@ import { getAnalytics, provideAnalytics, ScreenTrackingService, UserTrackingServ
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getDatabase, provideDatabase } from '@angular/fire/database';
 import { firebaseConfig } from './app/firebase.config';
+import { getStorage, provideStorage } from '@angular/fire/storage';
 
 bootstrapApplication(AppComponent,  {
   providers: [
@@ -27,6 +28,7 @@ bootstrapApplication(AppComponent,  {
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
+    provideStorage(() => getStorage()),
     provideAnalytics(() => getAnalytics()),
   ]
 })

@@ -8,18 +8,22 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { User } from 'firebase/auth';
 import { RegistroComponent } from '../registro/registro.component';
+import { StorageComponent } from '../storage/storage.component';
+import { doc, getDoc } from 'firebase/firestore';
+import { Firestore } from '@angular/fire/firestore';
 declare var bootstrap: any;
 @Component({
   selector: 'app-navbar',
   standalone:true,
-  imports: [MatButtonModule,MatMenuModule,RouterModule,CommonModule,FormsModule,RegistroComponent],
+  imports: [MatButtonModule,MatMenuModule,RouterModule,CommonModule,FormsModule,RegistroComponent, StorageComponent],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
+  // Propiedades del componente
+  currentUser: User | null = null;
   loginForm = { email: '', password: '' };
   loginError = false;
-  currentUser: User | null = null;
   mostrarRegistro = false;
   mostrarPanel = false;
   sintesis = window.speechSynthesis;
@@ -28,20 +32,44 @@ export class NavbarComponent {
   modoContraste = false;
   deferredPrompt: any;
   showInstallButton = false;
+  fotoPerfilURL = 'assets/profile-placeholder.jpg';
+  fotoPerfil: string = 'assets/profile-placeholder.jpg'; // por defecto
+mostrarComponenteStorage = false;
   
-  constructor(private authService: AuthService) {
+  // Constructor que inyecta el servicio de autenticación
+  constructor(private authService: AuthService, private firestore: Firestore) {
     this.authService.user$.subscribe(user => {
       this.currentUser = user;
     });
   }
 
+  // Método que se ejecuta al inicializar el componente
   ngOnInit(): void {
+    this.authService.user$.subscribe(async (user) => {
+    this.currentUser = user;
+
+    if (user) {
+      const docRef = doc(this.firestore, `usuarios/${user.uid}`);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const data = docSnap.data() as any;
+        if (data.fotoPerfil) {
+          this.fotoPerfilURL = data.fotoPerfil;
+        }
+      }
+    }
+  });
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault(); // Evitar que el navegador muestre el prompt por defecto
       this.deferredPrompt = e; // Guardar el evento para lanzarlo luego
       this.showInstallButton = true; // Mostrar botón de instalación en UI
     });
   }
+
+  actualizarFotoPerfil(nuevaFoto: string) {
+  this.fotoPerfil = nuevaFoto;
+  this.mostrarComponenteStorage = false;
+}
 
   instalarApp() {
     if (!this.deferredPrompt) {
@@ -157,5 +185,14 @@ cambiarFuente(event: Event) {
   const valor = selectElement.value;
   document.body.style.fontFamily = valor;
 }
+
+abrirSubirFoto() {
+  const modalEl = document.getElementById('storageModal');
+  if (modalEl) {
+    const modal = new bootstrap.Modal(modalEl);
+    modal.show();
+  }
+}
+
 
 }

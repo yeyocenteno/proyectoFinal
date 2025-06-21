@@ -74,12 +74,23 @@
         @if (currentUser) {
           <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle p-0" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="assets/profile-placeholder.jpg" alt="Perfil" class="rounded-circle" width="40" height="40" style="cursor:pointer;">
+            <img [src]="fotoPerfil" alt="Perfil" class="rounded-circle" width="40" height="40" style="cursor:pointer;">
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+            <div *ngIf="mostrarComponenteStorage" class="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-flex justify-content-center align-items-center z-3">
+              <div class="bg-white p-4 rounded shadow position-relative">
+                <app-storage (fotoSeleccionada)="actualizarFotoPerfil($event)"></app-storage>
+                <button class="btn-close position-absolute top-0 end-0 m-2" (click)="mostrarComponenteStorage = false"></button>
+              </div>
+            </div>
+
             <li> <span class="dropdown-item-text d-flex align-items-center" style="gap: 6px;">
-      <span>👤</span> {{ username }}
-    </span></li>
+            <span>👤</span> {{ username }}
+            </span></li>
+          <li>
+            <button class="dropdown-item" routerLink="/storage" (click)="abrirSubirFoto()">Subir foto de perfil</button>
+          </li>
+
             <li><hr class="dropdown-divider"></li>
             <li><button class="dropdown-item" (click)="logout()">Cerrar sesión</button></li>
             <a class="nav-link d-flex align-items-center" routerLink="/tablas" title="Ir a Tablas" routerLinkActive="active">
@@ -162,13 +173,34 @@
       }
       </div>
 
-      @if (mostrarRegistro){
-        <app-registro></app-registro>
-        <div class="mt-2 text-center">
-          <button class="btn btn-link text-secondary" (click)="alternarVistaRegistro()">¿Ya tienes cuenta? Inicia sesión</button>
+    @if (mostrarRegistro) {
+      <div class="d-flex justify-content-center">
+        <div style="max-width: 320px; width: 100%; margin-bottom: 40px;">
+          <app-registro></app-registro>
+          <div class="mt-2 text-center">
+            <button class="btn btn-link text-secondary" (click)="alternarVistaRegistro()">¿Ya tienes cuenta? Inicia sesión</button>
+          </div>
         </div>
-      }
+      </div>
+    }
+
       
     </div>
   </div>
 </div>
+
+<!-- Modal subir foto -->
+<div class="modal fade" id="storageModal" tabindex="-1" aria-labelledby="storageModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="storageModalLabel">Subir foto de perfil</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <app-storage></app-storage>
+      </div>
+    </div>
+  </div>
+</div>
+
