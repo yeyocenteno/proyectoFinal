@@ -1,17 +1,17 @@
 <form [formGroup]="registroForm" (ngSubmit)="registrarUsuario()" class="w-100" style="max-width: 320px; margin-bottom: 20px;">
   <div class="mb-3">
     <label for="nombre" class="form-label">Nombre completo</label>
-    <input type="text" class="form-control form-control-lg" id="nombre" formControlName="nombre" placeholder="Tu nombre completo">
+    <input type="text" class="form-control" id="nombre" formControlName="nombre" placeholder="Tu nombre completo">
   </div>
 
   <div class="mb-3">
     <label for="correo" class="form-label">Correo electrónico</label>
-    <input type="email" class="form-control form-control-lg" id="correo" formControlName="correo" placeholder="usuario@correo.com">
+    <input type="email" class="form-control" id="correo" formControlName="correo" placeholder="usuario@correo.com">
   </div>
 
   <div class="mb-3">
     <label for="contrasena" class="form-label">Contraseña</label>
-    <input type="password" class="form-control form-control-lg" id="contrasena" formControlName="contrasena" placeholder="Contraseña">
+    <input type="password" class="form-control" id="contrasena" formControlName="contrasena" placeholder="Contraseña">
     <div class="form-text text-danger" *ngIf="registroForm.get('contrasena')?.invalid && registroForm.get('contrasena')?.touched">
       La contraseña debe tener 6-12 caracteres, una mayúscula, un número y solo letras/dígitos/_.
     </div>
@@ -19,7 +19,7 @@
 
   <div class="mb-3">
     <label for="confirmar" class="form-label">Confirmar contraseña</label>
-    <input type="password" class="form-control form-control-lg" id="confirmar" formControlName="confirmarContrasena" placeholder="Confirma tu contraseña">
+    <input type="password" class="form-control" id="confirmar" formControlName="confirmarContrasena" placeholder="Confirma tu contraseña">
     <div class="form-text text-danger" *ngIf="registroForm.hasError('noCoinciden') && registroForm.get('confirmarContrasena')?.touched">
       Las contraseñas no coinciden.
     </div>
@@ -28,8 +28,8 @@
   <!-- Sección para subir foto de perfil -->
   <div class="mb-3">
     <label for="foto" class="form-label">Foto de perfil</label>
-    <input type="file" id="foto" class="form-control form-control-lg" (change)="onFileSelected($event)">
+    <input type="file" id="foto" class="form-control" (change)="onFileSelected($event)">
   </div>
 
-  <button class="btn btn-primary btn-lg w-100" type="submit" [disabled]="registroForm.invalid">Registrar</button>
+  <button class="btn btn-primary w-100" type="submit" [disabled]="registroForm.invalid">Registrar</button>
 </form>

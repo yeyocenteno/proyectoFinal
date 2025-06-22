@@ -125,56 +125,99 @@
   </div>
 </nav>
 
-<!-- Modal de login -->
+<!-- Modal de inicio de sesión -->
 <div class="modal fade" id="adminLoginModal" tabindex="-1" aria-labelledby="adminLoginModalLabel" aria-hidden="true">
   <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="adminLoginModalLabel">Inicio de sesión</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-      </div>
-      <div class="modal-body d-flex flex-column align-items-center px-4 py-4">
-        @if(!mostrarRegistro){
-        <form class="w-100" style="max-width: 320px;">
-            <div class="mb-3">
-              <label for="adminUsername" class="form-label">Correo electrónico</label>
-              <input type="email" class="form-control form-control-lg" id="adminUsername" placeholder="usuario@correo.com" [(ngModel)]="loginForm.email" name="email" required>
-            </div>
-
-            <div class="mb-3">
-              <label for="adminPassword" class="form-label">Contraseña</label>
-              <input type="password" class="form-control form-control-lg" id="adminPassword" placeholder="Contraseña" [(ngModel)]="loginForm.password" name="password" required>
-            </div>
-
-            <div class="mb-3 d-flex justify-content-between align-items-center">
-              <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="rememberMe">
-                <label class="form-check-label" for="rememberMe">Recuérdame</label>
-              </div>
-              <a href="#" class="small text-decoration-none">¿Olvidaste tu contraseña?</a>
-            </div>
-        </form>
-        <!-- CAPTCHA -->
-        <div class="mb-3">
-          <div class="g-recaptcha mx-auto d-block" data-sitekey="6LeLlGUrAAAAACRS6s1RjQpe7sjvCOzcEiLEW_Uj"></div>
+    <div class="modal-content px-4 py-5 text-center">
+      <!-- LOGO Y NOMBRE -->
+      <h4 class="fw-bold mb-4">GYM STUDIO</h4>
+      @if (!mostrarRegistro) {
+            <!-- FORMULARIO DE EMAIL -->
+      @if (metodoSeleccionado === 'correo' || !metodoSeleccionado) {
+      <form class="w-100" style="max-width: 350px; margin: auto;">
+        <div class="mb-3 text-start">
+          <label for="adminUsername" class="form-label">Correo electrónico</label>
+          <input type="email" class="form-control"  id="adminUsername" placeholder="usuario@correo.com" [(ngModel)]="loginForm.email" name="email" required>
         </div>
-        <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary" (click)="login()">Iniciar sesión</button>
-      </div>
-        @if (loginError) {
-          <div class="alert alert-danger mt-2">
-            Usuario o contraseña incorrectos.
+
+        <div class="mb-3 text-start">
+          <label for="adminPassword" class="form-label">Contraseña</label>
+          <input type="password" class="form-control" id="adminPassword" placeholder="Contraseña"  [(ngModel)]="loginForm.password" name="password" required>
+        </div>
+
+        <div class="mb-3 d-flex justify-content-between align-items-center text-start">
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="rememberMe">
+            <label class="form-check-label" for="rememberMe">Recuérdame</label>
           </div>
-        }
-        <div class="mt-3 text-center">
-          <button class="btn btn-link text-primary" (click)="alternarVistaRegistro()">¿No tienes cuenta? Regístrate</button>
+          <a href="#" class="small text-decoration-none">¿Olvidaste tu contraseña?</a>
         </div>
-      }
+
+        <!-- CAPTCHA -->
+        <div id="recaptcha-correo" class="mb-3">
+          <div class="g-recaptcha" data-sitekey="6LeLlGUrAAAAACRS6s1RjQpe7sjvCOzcEiLEW_Uj"></div>
+        </div>
+
+        <button class="btn btn-primary w-100 rounded-pill" type="button" (click)="login()">Iniciar sesión</button>
+
+        <!-- Error -->
+        <div *ngIf="loginError" class="alert alert-danger mt-3">Usuario o contraseña incorrectos.</div>
+      </form>
+      
+
+       <!-- SEPARADOR -->
+      <div class="d-flex align-items-center my-3">
+        <hr class="flex-grow-1">
+        <span class="px-2 small text-muted">o</span>
+        <hr class="flex-grow-1">
       </div>
 
-    @if (mostrarRegistro) {
-      <div class="d-flex justify-content-center">
+      <!-- BOTONES DE INICIO RÁPIDO -->
+      <button class="btn btn-primary w-100 mb-3 rounded-pill">
+        <i class="fab fa-facebook me-2"></i> Continuar con Facebook
+      </button>
+      <button class="btn btn-dark w-100 mb-3 rounded-pill">
+        <i class="fab fa-google me-2"></i> Continuar con Google
+      </button>
+      <button class="btn btn-success w-100 mb-4 rounded-pill" (click)="metodoSeleccionado = 'telefono'">
+        <i class="fas fa-sms me-2"></i> Iniciar con SMS
+      </button>
+    }
+
+      
+  <!-- Vista teléfono -->
+  @if (metodoSeleccionado === 'telefono') {
+    <form (ngSubmit)="codigoEnviado ? verificarCodigo() : enviarCodigo()" class="w-100" style="max-width: 350px;">
+      <div class="mb-3">
+        <label class="form-label">Número telefónico</label>
+        <input type="tel" class="form-control" [(ngModel)]="telefono" name="telefono" placeholder="+52 1234567890" required *ngIf="!codigoEnviado">
+        <input type="text" class="form-control" [(ngModel)]="codigo" name="codigo" placeholder="Código recibido" required *ngIf="codigoEnviado">
+      </div>
+
+      <div id="recaptcha-telefono" class="mb-3"></div>
+
+
+      <button class="btn btn-success w-100 rounded-pill" type="submit">
+        {{ codigoEnviado ? 'Verificar código' : 'Enviar código' }}
+      </button>
+
+      <div class="text-center mt-3">
+        <a href="#" class="text-secondary small" (click)="metodoSeleccionado = 'correo'">⬅ Volver</a>
+      </div>
+    </form>
+  }
+  <div class="w-100">
+      <div class="d-flex align-items-center my-3">
+        <hr class="flex-grow-1">
+        <span class="px-2 small text-muted">¿No tienes cuenta?</span>
+        <hr class="flex-grow-1">
+      </div>
+      <button class="btn btn-outline-secondary w-100 rounded-pill" (click)="alternarVistaRegistro()">Registrarse</button>
+    </div>
+      }
+  <!-- Registro -->
+  @else {
+    <div class="d-flex justify-content-center">
         <div style="max-width: 320px; width: 100%; margin-bottom: 40px;">
           <app-registro></app-registro>
           <div class="mt-2 text-center">
@@ -182,12 +225,9 @@
           </div>
         </div>
       </div>
-    }
-
-      
-    </div>
-  </div>
+  }
 </div>
+
 
 <!-- Modal subir foto -->
 <div class="modal fade" id="storageModal" tabindex="-1" aria-labelledby="storageModalLabel" aria-hidden="true">
@@ -203,4 +243,3 @@
     </div>
   </div>
 </div>
-

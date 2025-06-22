@@ -6,11 +6,14 @@ import { RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
-import { User } from 'firebase/auth';
+import { RecaptchaVerifier, signInWithPhoneNumber, User } from 'firebase/auth';
 import { RegistroComponent } from '../registro/registro.component';
 import { StorageComponent } from '../storage/storage.component';
 import { doc, getDoc } from 'firebase/firestore';
 import { Firestore } from '@angular/fire/firestore';
+import { getAuth } from 'firebase/auth';
+
+
 declare var bootstrap: any;
 @Component({
   selector: 'app-navbar',
@@ -34,20 +37,45 @@ export class NavbarComponent {
   showInstallButton = false;
   fotoPerfilURL = 'assets/profile-placeholder.jpg';
   fotoPerfil: string = 'assets/profile-placeholder.jpg'; // por defecto
-mostrarComponenteStorage = false;
+  mostrarComponenteStorage = false;
+  telefono = '';
+  codigo = '';
+  verificador: RecaptchaVerifier | undefined;
+  codigoEnviado = false;
+  confirmacion: any;
+  auth = getAuth();// o simplemente: auth = getAuth();
+  metodoSeleccionado: 'correo' | 'telefono' | '' = '';
+  captchaCorreoResuelto = false;
+  verificadorTelefono: RecaptchaVerifier | undefined;
+
+
+
+
   
   // Constructor que inyecta el servicio de autenticación
   constructor(private authService: AuthService, private firestore: Firestore) {
     this.authService.user$.subscribe(user => {
       this.currentUser = user;
-    });
+    }); // ✅ auth puro de Firebase
+
   }
 
   // Método que se ejecuta al inicializar el componente
   ngOnInit(): void {
+  // Suscribirse al usuario actual
     this.authService.user$.subscribe(async (user) => {
     this.currentUser = user;
+    
+    // Configurar reCAPTCHA invisible
+    if (!this.verificador) {
+      this.verificador = new RecaptchaVerifier(this.auth, 'recaptcha-container-tel', {
+        size: 'invisible',
+      });
+      this.verificador.render();
+    }
 
+
+    // Si hay un usuario autenticado, obtener su foto de perfil
     if (user) {
       const docRef = doc(this.firestore, `usuarios/${user.uid}`);
       const docSnap = await getDoc(docRef);
@@ -59,6 +87,7 @@ mostrarComponenteStorage = false;
       }
     }
   });
+    // Configurar el evento de instalación de PWA
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault(); // Evitar que el navegador muestre el prompt por defecto
       this.deferredPrompt = e; // Guardar el evento para lanzarlo luego
@@ -112,13 +141,9 @@ mostrarComponenteStorage = false;
         title: '¡Inicio de sesión exitoso!',
         text: `Bienvenido, ${result.user.email}`
       }).then(() => {
-        const modalElement = document.getElementById('adminLoginModal');
-        if (modalElement) {
-          const modalInstance = bootstrap.Modal.getInstance(modalElement);
-          modalInstance?.hide();
-        }
-        // Reinicia el captcha para la próxima vez
-        (window as any).grecaptcha?.reset();
+        const modal = document.getElementById('adminLoginModal');
+        bootstrap.Modal.getInstance(modal!)?.hide();
+        (window as any).grecaptcha?.reset(); // Reinicia captcha
       });
       this.loginError = false;
     })
@@ -192,6 +217,47 @@ abrirSubirFoto() {
     const modal = new bootstrap.Modal(modalEl);
     modal.show();
   }
+}
+
+async enviarCodigo() {
+  try {
+    this.confirmacion = await signInWithPhoneNumber(this.auth, this.telefono, this.verificadorTelefono!);
+    this.codigoEnviado = true;
+    Swal.fire('Código enviado', 'Revisa tu teléfono', 'success');
+  } catch (error: any) {
+    Swal.fire('Error', error.message, 'error');
+  }
+}
+
+
+  async verificarCodigo() {
+    try {
+      const resultado = await this.confirmacion.confirm(this.codigo);
+      Swal.fire('¡Bienvenido!', 'Inicio de sesión exitoso', 'success');
+      // Aquí puedes redirigir o actualizar el estado del usuario
+    } catch (error: any) {
+      Swal.fire('Error', 'Código inválido', 'error');
+    }
+  }
+
+  mostrarVistaTelefono() {
+  this.metodoSeleccionado = 'telefono';
+
+  setTimeout(() => {
+    const container = document.getElementById('recaptcha-telefono');
+    if (container && !this.verificadorTelefono) {
+      this.verificadorTelefono = new RecaptchaVerifier(this.auth, 'recaptcha-telefono', {
+        size: 'invisible',
+        callback: (response: any) => {
+          console.log('Invisible reCAPTCHA resuelto', response);
+        }
+      });
+
+      this.verificadorTelefono.render().then(() => {
+        console.log('reCAPTCHA invisible renderizado correctamente.');
+      });
+    }
+  }, 500); // ⏳ Espera a que Angular lo pinte
 }
 
 
