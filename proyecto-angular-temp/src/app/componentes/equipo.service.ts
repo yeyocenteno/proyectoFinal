@@ -33,9 +33,9 @@ export class EquipoService {
     },
     {
       nombre: 'Cindy Fabiola Hernandez Muñoz',
-      id: '347301',
+      id: '350114',
       edad: 20,
-      foto: 'assets/jaime.jpg',
+      foto: 'assets/fabi.jpg',
       carrera: 'Ing. en Sistemas Computacionales',
       semestre: '6° C'
     },

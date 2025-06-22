@@ -90,6 +90,11 @@
           <li>
             <button class="dropdown-item" routerLink="/storage" (click)="abrirSubirFoto()">Subir foto de perfil</button>
           </li>
+          
+          <li *ngIf="admin">
+            <a class="dropdown-item" routerLink="/admin">Administrar usuarios</a>
+          </li>
+
 
             <li><hr class="dropdown-divider"></li>
             <li><button class="dropdown-item" (click)="logout()">Cerrar sesión</button></li>
@@ -134,44 +139,65 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <div class="modal-body d-flex flex-column align-items-center px-4 py-4">
-        @if(!mostrarRegistro){
-        <form class="w-100" style="max-width: 320px;">
-            <div class="mb-3">
-              <label for="adminUsername" class="form-label">Correo electrónico</label>
-              <input type="email" class="form-control form-control-lg" id="adminUsername" placeholder="usuario@correo.com" [(ngModel)]="loginForm.email" name="email" required>
-            </div>
+        <div class="w-100" style="max-width: 320px;">
 
-            <div class="mb-3">
-              <label for="adminPassword" class="form-label">Contraseña</label>
-              <input type="password" class="form-control form-control-lg" id="adminPassword" placeholder="Contraseña" [(ngModel)]="loginForm.password" name="password" required>
-            </div>
-
-            <div class="mb-3 d-flex justify-content-between align-items-center">
-              <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="rememberMe">
-                <label class="form-check-label" for="rememberMe">Recuérdame</label>
+          <!-- FORMULARIO DE LOGIN -->
+          <div [hidden]="mostrarRegistro">
+            <form (ngSubmit)="login()">
+              <div class="mb-3">
+                <label for="adminUsername" class="form-label">Correo electrónico</label>
+                <input type="email" class="form-control form-control-lg" id="adminUsername"
+                      placeholder="usuario@correo.com" [(ngModel)]="loginForm.email" name="email" required>
               </div>
-              <a href="#" class="small text-decoration-none">¿Olvidaste tu contraseña?</a>
+
+              <div class="mb-3">
+                <label for="adminPassword" class="form-label">Contraseña</label>
+                <input type="password" class="form-control form-control-lg" id="adminPassword"
+                      placeholder="Contraseña" [(ngModel)]="loginForm.password" name="password" required>
+              </div>
+
+              <div class="mb-3 d-flex justify-content-between align-items-center">
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" id="rememberMe">
+                  <label class="form-check-label" for="rememberMe">Recuérdame</label>
+                </div>
+                <a href="#" class="small text-decoration-none">¿Olvidaste tu contraseña?</a>
+              </div>
+
+              <!-- CAPTCHA -->
+              <div class="mb-3">
+                <div class="g-recaptcha mx-auto d-block"
+                    data-sitekey="6LeLlGUrAAAAACRS6s1RjQpe7sjvCOzcEiLEW_Uj"></div>
+              </div>
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+              </div>
+
+              @if (loginError) {
+                <div class="alert alert-danger mt-2">
+                  Usuario o contraseña incorrectos.
+                </div>
+              }
+            </form>
+
+            <div class="mt-3 text-center">
+              <button class="btn btn-link text-primary" (click)="mostrarRegistro = true">¿No tienes cuenta? Regístrate</button>
             </div>
-        </form>
-        <!-- CAPTCHA -->
-        <div class="mb-3">
-          <div class="g-recaptcha mx-auto d-block" data-sitekey="6LeLlGUrAAAAACRS6s1RjQpe7sjvCOzcEiLEW_Uj"></div>
-        </div>
-        <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary" (click)="login()">Iniciar sesión</button>
-      </div>
-        @if (loginError) {
-          <div class="alert alert-danger mt-2">
-            Usuario o contraseña incorrectos.
           </div>
-        }
-        <div class="mt-3 text-center">
-          <button class="btn btn-link text-primary" (click)="alternarVistaRegistro()">¿No tienes cuenta? Regístrate</button>
+
+          <!-- REGISTRO -->
+          <div [hidden]="!mostrarRegistro">
+            <app-registro></app-registro>
+            <div class="mt-3 text-center">
+              <button class="btn btn-link text-secondary" (click)="mostrarRegistro = false">¿Ya tienes cuenta? Inicia sesión</button>
+            </div>
+          </div>
+
         </div>
-      }
       </div>
+
 
     @if (mostrarRegistro) {
       <div class="d-flex justify-content-center">
@@ -203,4 +229,3 @@
     </div>
   </div>
 </div>
-

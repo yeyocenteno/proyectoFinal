@@ -1,0 +1,50 @@
+<div class="container mt-5">
+  <h2 class="mb-4">Panel de Administración</h2>
+
+  <div *ngIf="datos.length === 0" class="alert alert-info">
+    No hay datos registrados aún.
+  </div>
+
+  <table *ngIf="datos.length > 0" class="table table-bordered table-striped">
+    <thead class="table-dark">
+      <tr>
+        <th>Nombre</th>
+        <th>Correo</th>
+        <th>Foto</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let usuario of datos">
+        <td *ngIf="editando?.id !== usuario.id">{{ usuario.nombre }}</td>
+        <td *ngIf="editando?.id === usuario.id">
+          <input [(ngModel)]="editando.nombre" class="form-control">
+        </td>
+
+        <td *ngIf="editando?.id !== usuario.id">{{ usuario.correo }}</td>
+        <td *ngIf="editando?.id === usuario.id">
+          <input [(ngModel)]="editando.correo" class="form-control">
+        </td>
+
+        <td>
+          <img [src]="usuario.photoURL || 'assets/profile-placeholder.jpg'" alt="Foto" width="40">
+        </td>
+
+        <td>
+          <ng-container *ngIf="editando?.id !== usuario.id; else editandoBtns">
+            <button class="btn btn-sm btn-warning me-2" (click)="iniciarEdicion(usuario)">Editar</button>
+            <button class="btn btn-sm btn-danger" (click)="eliminarUsuario(usuario.id)">Eliminar</button>
+          </ng-container>
+          <ng-template #editandoBtns>
+            <button class="btn btn-sm btn-success me-2" (click)="guardarCambios()">Guardar</button>
+            <button class="btn btn-sm btn-secondary" (click)="cancelarEdicion()">Cancelar</button>
+          </ng-template>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="alert alert-info mt-4">
+    📊 Las gráficas ya están disponibles en su página correspondiente.
+  </div>
+</div>
