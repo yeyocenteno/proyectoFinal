@@ -2,10 +2,12 @@ import { Injectable } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
 import { Firestore } from '@angular/fire/firestore';
 import { Storage } from '@angular/fire/storage';
-import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateProfile, User, UserCredential } from 'firebase/auth';
+import { Router } from '@angular/router';
+import { createUserWithEmailAndPassword, FacebookAuthProvider, getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile, User, UserCredential } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { BehaviorSubject } from 'rxjs';
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +18,7 @@ export class AuthService {
   public user$ = this.userSubject.asObservable();
     currentUserValue: any;
 
-  constructor(private auth: Auth, private firestore: Firestore, private storage: Storage) {
+  constructor(private auth: Auth, private firestore: Firestore, private storage: Storage, private router: Router) {
     onAuthStateChanged(this.auth, (user) => {
       this.userSubject.next(user);
     });
@@ -79,6 +81,30 @@ export class AuthService {
     if (user) {
       await updateProfile(user, { photoURL: url });
     }
+  }
+
+  loginConGoogle() {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(this.auth, provider)
+      .then(result => {
+        Swal.fire('Bienvenido', result.user.displayName || '', 'success');
+        this.router.navigate(['/']); // o donde desees redirigir
+      })
+      .catch(error => {
+        Swal.fire('Error', error.message, 'error');
+      });
+  }
+
+  loginConFacebook() {
+    const provider = new FacebookAuthProvider();
+    signInWithPopup(this.auth, provider)
+      .then(result => {
+        Swal.fire('Bienvenido', result.user.displayName || '', 'success');
+        this.router.navigate(['/']);
+      })
+      .catch(error => {
+        Swal.fire('Error', error.message, 'error');
+      });
   }
 
   

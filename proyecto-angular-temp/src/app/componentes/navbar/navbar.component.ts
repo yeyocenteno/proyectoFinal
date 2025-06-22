@@ -164,6 +164,15 @@ logout() {
   });
 }
 
+iniciarConGoogle() {
+  this.authService.loginConGoogle();
+  this.rolUsuario = 'user'; // Asignar rol por defecto al iniciar sesión con Google
+}
+
+iniciarConFacebook() {
+  this.authService.loginConFacebook();
+  this.rolUsuario = 'user'; // Asignar rol por defecto al iniciar sesión con Facebook
+}
 
 
   togglePanel() {
