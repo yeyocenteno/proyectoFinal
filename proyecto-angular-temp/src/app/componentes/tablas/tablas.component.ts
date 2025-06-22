@@ -3,10 +3,11 @@ import { Component } from '@angular/core';
 import Swal from 'sweetalert2';
 import { EquipoService, Integrante } from '../equipo.service';
 import { Router } from '@angular/router';
+import { AdminDashboardComponent } from '../../components/admin-dashboard/admin-dashboard.component';
 
 @Component({
   selector: 'app-tablas',
-  imports: [CommonModule],
+  imports: [CommonModule, AdminDashboardComponent],
   templateUrl: './tablas.component.html',
   styleUrl: './tablas.component.css'
 })

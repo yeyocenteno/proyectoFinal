@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
@@ -53,7 +53,7 @@ export class NavbarComponent {
 
 
   // Constructor que inyecta el servicio de autenticación
-  constructor(private authService: AuthService, private firestore: Firestore) {
+  constructor(private authService: AuthService, private router : Router, private firestore: Firestore) {
       this.authService.user$.subscribe(user => {
         this.currentUser = user;
       }); // ✅ auth puro de Firebase
@@ -156,12 +156,14 @@ export class NavbarComponent {
     return this.currentUser.email.split('@')[0];
   }
 
-  logout() {
+logout() {
   this.authService.logout().then(() => {
     Swal.fire('Sesión cerrada', 'Has cerrado sesión exitosamente.', 'info').then(() => {
+      this.router.navigate(['/']); // Redirige al inicio
     });
   });
 }
+
 
 
   togglePanel() {
