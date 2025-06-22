@@ -9,6 +9,16 @@
     <input type="email" class="form-control" id="correo" formControlName="correo" placeholder="usuario@correo.com">
   </div>
 
+    <!-- 🔽 Nuevo selector para el rol -->
+  <div class="mb-3">
+    <label for="rol" class="form-label">Selecciona tu rol</label>
+    <select class="form-select form-select-lg" id="rol" formControlName="rol">
+      <option value="usuario">Usuario</option>
+      <option value="admin">Administrador</option>
+    </select>
+  </div>
+
+
   <div class="mb-3">
     <label for="contrasena" class="form-label">Contraseña</label>
     <input type="password" class="form-control" id="contrasena" formControlName="contrasena" placeholder="Contraseña">

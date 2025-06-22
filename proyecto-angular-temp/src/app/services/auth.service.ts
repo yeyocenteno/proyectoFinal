@@ -14,6 +14,7 @@ export class AuthService {
 
   private userSubject = new BehaviorSubject<User | null>(null);
   public user$ = this.userSubject.asObservable();
+    currentUserValue: any;
 
   constructor(private auth: Auth, private firestore: Firestore, private storage: Storage) {
     onAuthStateChanged(this.auth, (user) => {

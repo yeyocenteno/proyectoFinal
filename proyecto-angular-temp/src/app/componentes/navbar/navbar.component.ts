@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatButtonModule} from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
@@ -15,15 +15,15 @@ import { getAuth } from 'firebase/auth';
 
 
 declare var bootstrap: any;
+
 @Component({
   selector: 'app-navbar',
-  standalone:true,
-  imports: [MatButtonModule,MatMenuModule,RouterModule,CommonModule,FormsModule,RegistroComponent, StorageComponent],
+  standalone: true,
+  imports: [MatButtonModule, MatMenuModule, RouterModule, CommonModule, FormsModule, RegistroComponent, StorageComponent],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
-  // Propiedades del componente
   currentUser: User | null = null;
   loginForm = { email: '', password: '' };
   loginError = false;
@@ -47,47 +47,35 @@ export class NavbarComponent {
   metodoSeleccionado: 'correo' | 'telefono' | '' = '';
   captchaCorreoResuelto = false;
   verificadorTelefono: RecaptchaVerifier | undefined;
+  rolUsuario: string = ''; // <-- NUEVO: rol del usuario (admin o user)
+  tamanoFuente: number = 100;
+  admin: boolean = false;
 
 
-
-
-  
   // Constructor que inyecta el servicio de autenticación
   constructor(private authService: AuthService, private firestore: Firestore) {
-    this.authService.user$.subscribe(user => {
-      this.currentUser = user;
-    }); // ✅ auth puro de Firebase
-
+      this.authService.user$.subscribe(user => {
+        this.currentUser = user;
+      }); // ✅ auth puro de Firebase
   }
 
-  // Método que se ejecuta al inicializar el componente
+ // Método que se ejecuta al inicializar el componente
   ngOnInit(): void {
-  // Suscribirse al usuario actual
     this.authService.user$.subscribe(async (user) => {
     this.currentUser = user;
-    
-    // Configurar reCAPTCHA invisible
-    if (!this.verificador) {
-      this.verificador = new RecaptchaVerifier(this.auth, 'recaptcha-container-tel', {
-        size: 'invisible',
-      });
-      this.verificador.render();
-    }
 
-
-    // Si hay un usuario autenticado, obtener su foto de perfil
     if (user) {
       const docRef = doc(this.firestore, `usuarios/${user.uid}`);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         const data = docSnap.data() as any;
+        this.admin = data.rol === 'admin'; 
         if (data.fotoPerfil) {
           this.fotoPerfilURL = data.fotoPerfil;
         }
       }
     }
   });
-    // Configurar el evento de instalación de PWA
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault(); // Evitar que el navegador muestre el prompt por defecto
       this.deferredPrompt = e; // Guardar el evento para lanzarlo luego
@@ -96,9 +84,9 @@ export class NavbarComponent {
   }
 
   actualizarFotoPerfil(nuevaFoto: string) {
-  this.fotoPerfil = nuevaFoto;
-  this.mostrarComponenteStorage = false;
-}
+    this.fotoPerfil = nuevaFoto;
+    this.mostrarComponenteStorage = false;
+  }
 
   instalarApp() {
     if (!this.deferredPrompt) {
@@ -115,109 +103,113 @@ export class NavbarComponent {
       this.showInstallButton = false;
     });
   }
-  
+
   alternarVistaRegistro() {
     this.mostrarRegistro = !this.mostrarRegistro;
   }
 
-  login() {
-  const captchaResponse = (window as any).grecaptcha?.getResponse();
-  
-  if (!captchaResponse) {
-    Swal.fire({
-      icon: 'warning',
-      title: 'Verificación requerida',
-      text: 'Por favor, resuelve el CAPTCHA antes de iniciar sesión.'
-    });
-    return; // detiene el login si no se resolvió captcha
-  }
 
-  const { email, password } = this.loginForm;
-  
-  this.authService.login(email, password)
-    .then(result => {
+
+  login() {
+    const captchaResponse = (window as any).grecaptcha?.getResponse();
+
+    if (!captchaResponse) {
       Swal.fire({
-        icon: 'success',
-        title: '¡Inicio de sesión exitoso!',
-        text: `Bienvenido, ${result.user.email}`
-      }).then(() => {
-        const modal = document.getElementById('adminLoginModal');
-        bootstrap.Modal.getInstance(modal!)?.hide();
-        (window as any).grecaptcha?.reset(); // Reinicia captcha
+        icon: 'warning',
+        title: 'Verificación requerida',
+        text: 'Por favor, resuelve el CAPTCHA antes de iniciar sesión.'
       });
-      this.loginError = false;
-    })
-    .catch(error => {
-      this.loginError = true;
-      Swal.fire({
-        icon: 'error',
-        title: 'Error al iniciar sesión',
-        text: error.message
+      return;
+    }
+
+    const { email, password } = this.loginForm;
+
+    this.authService.login(email, password)
+      .then(result => {
+        Swal.fire({
+          icon: 'success',
+          title: '¡Inicio de sesión exitoso!',
+          text: `Bienvenido, ${result.user.email}`
+        }).then(() => {
+          const modalElement = document.getElementById('adminLoginModal');
+          if (modalElement) {
+            const modalInstance = bootstrap.Modal.getInstance(modalElement);
+            modalInstance?.hide();
+          }
+          (window as any).grecaptcha?.reset();
+        });
+        this.loginError = false;
+      })
+      .catch(error => {
+        this.loginError = true;
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al iniciar sesión',
+          text: error.message
+        });
+        (window as any).grecaptcha?.reset();
       });
-      // Reinicia el captcha para que pueda intentar otra vez
-      (window as any).grecaptcha?.reset();
-    });
-}
+  }
 
   get username(): string {
-  if (!this.currentUser || !this.currentUser.email) return '';
-  return this.currentUser.email.split('@')[0];
-}
-
+    if (!this.currentUser || !this.currentUser.email) return '';
+    return this.currentUser.email.split('@')[0];
+  }
 
   logout() {
-    this.authService.logout().then(() => {
-      Swal.fire('Sesión cerrada', 'Has cerrado sesión exitosamente.', 'info');
+  this.authService.logout().then(() => {
+    Swal.fire('Sesión cerrada', 'Has cerrado sesión exitosamente.', 'info').then(() => {
     });
-  }
+  });
+}
+
 
   togglePanel() {
-  this.mostrarPanel = !this.mostrarPanel;
-}
-
-iniciarLectura() {
-  const texto = document.body.innerText; // o un selector específico como .contenido-principal
-  const mensaje = new SpeechSynthesisUtterance(texto);
-  speechSynthesis.speak(mensaje);
-}
-
-pausarLectura() {
-  this.sintesis.pause();
-}
-
-detenerLectura() {
-  this.sintesis.cancel();
-}
-toggleContraste() {
-  this.modoContraste = !this.modoContraste;
-  const body = document.body;
-
-  if (this.modoContraste) {
-    console.log('Activando modo contraste');
-    body.classList.add('modo-contraste');
-  } else {
-    body.classList.remove('modo-contraste');
+    this.mostrarPanel = !this.mostrarPanel;
   }
-}
 
-  tamanoFuente: number = 100;
-
-cambiarTamanoTexto() {
-  document.body.style.fontSize = `${this.tamanoFuente}%`;
-}
-cambiarFuente(event: Event) {
-  const selectElement = event.target as HTMLSelectElement;
-  const valor = selectElement.value;
-  document.body.style.fontFamily = valor;
-}
-
-abrirSubirFoto() {
-  const modalEl = document.getElementById('storageModal');
-  if (modalEl) {
-    const modal = new bootstrap.Modal(modalEl);
-    modal.show();
+  iniciarLectura() {
+    const texto = document.body.innerText;
+    const mensaje = new SpeechSynthesisUtterance(texto);
+    speechSynthesis.speak(mensaje);
   }
-}
+
+  pausarLectura() {
+    this.sintesis.pause();
+  }
+
+  detenerLectura() {
+    this.sintesis.cancel();
+  }
+
+  toggleContraste() {
+    this.modoContraste = !this.modoContraste;
+    const body = document.body;
+
+    if (this.modoContraste) {
+      body.classList.add('modo-contraste');
+    } else {
+      body.classList.remove('modo-contraste');
+    }
+  }
+
+  cambiarTamanoTexto() {
+    document.body.style.fontSize = `${this.tamanoFuente}%`;
+  }
+
+  cambiarFuente(event: Event) {
+    const selectElement = event.target as HTMLSelectElement;
+    const valor = selectElement.value;
+    document.body.style.fontFamily = valor;
+  }
+
+  abrirSubirFoto() {
+    const modalEl = document.getElementById('storageModal');
+    if (modalEl) {
+      const modal = new bootstrap.Modal(modalEl);
+      modal.show();
+    }
+  }
 
 async enviarCodigo() {
   try {
