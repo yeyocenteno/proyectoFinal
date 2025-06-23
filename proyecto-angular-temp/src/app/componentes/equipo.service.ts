@@ -19,7 +19,7 @@ export class EquipoService {
       nombre: 'Tadeo Andrade Sustaita',
       id: '281466',
       edad: 20,
-      foto: 'assets/ricardo.jpg',
+      foto: 'assets/tadeo.jpg',
       carrera: 'Ing. en Sistemas Computacionales',
       semestre: '6° C'
     },
@@ -51,7 +51,7 @@ export class EquipoService {
       nombre: 'Juan Carlos Uriarte PAdilla',
       id: '347301',
       edad: 20,
-      foto: 'assets/jaime.jpg',
+      foto: 'assets/juanca.jpg',
       carrera: 'Ing. en Sistemas Computacionales',
       semestre: '6° C'
     }
