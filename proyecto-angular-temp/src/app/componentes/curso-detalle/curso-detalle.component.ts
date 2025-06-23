@@ -26,6 +26,13 @@ export class CursoDetalleComponent implements OnInit {
 
     ngOnInit(): void {
       const id = this.route.snapshot.paramMap.get('id');
+      
+            setTimeout(() => {
+        window.scrollTo({
+          top: 100, // Puedes ajustar el margen superior
+          behavior: 'smooth'
+        });
+      }, 0);
       if (id) {
         this.loading = true; // inicio loading
         this.cursoService.obtenerCursoPorId(id).subscribe({
