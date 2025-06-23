@@ -1,0 +1,18 @@
+<form (ngSubmit)="sendEmail()" #emailForm="ngForm" class="email-form">
+  <label>
+    Correo destinatario:
+    <input type="email" [(ngModel)]="email.to" name="to" placeholder="Correo destinatario" required>
+  </label>
+
+  <label>
+    Asunto:
+    <input type="text" [(ngModel)]="email.subject" name="subject" placeholder="Asunto" required>
+  </label>
+
+  <label>
+    Mensaje:
+    <textarea [(ngModel)]="email.message" name="message" placeholder="Mensaje" required></textarea>
+  </label>
+
+  <button type="submit">Enviar correo</button>
+</form>
