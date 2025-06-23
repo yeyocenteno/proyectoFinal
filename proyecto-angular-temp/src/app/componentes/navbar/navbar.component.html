@@ -95,26 +95,25 @@
             <a class="dropdown-item" routerLink="/admin">Administrar usuarios</a>
           </li>
 
-
-            <li><hr class="dropdown-divider"></li>
-            <li><button class="dropdown-item" (click)="logout()">Cerrar sesión</button></li>
-            <li *ngFor="admin">
+          <li *ngIf="admin">
             <a class="nav-link d-flex align-items-center" routerLink="/tablas" title="Ir a Tablas" routerLinkActive="active">
-          <div style="display: flex; align-items: center;">
-            <svg xmlns="http://www.w3.org/2000/svg"
-                width="24" height="24" viewBox="0 0 24 24"
-                fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round"
-                style="margin-left: 16px; margin-right: 5px;">
-              <path d="M15 17h2" />
-              <path d="M3 5a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-14z" />
-              <path d="M11 12h6" />
-              <path d="M13 7h4" />
-            </svg>
-            <p style="margin: 0;">Consultar tablas.</p>
-          </div>
-        </a>
-        </li>
+              <div style="display: flex; align-items: center;">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    width="24" height="24" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round"
+                    style="margin-left: 16px; margin-right: 5px;">
+                  <path d="M15 17h2" />
+                  <path d="M3 5a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-14z" />
+                  <path d="M11 12h6" />
+                  <path d="M13 7h4" />
+                </svg>
+                <p style="margin: 0;">Consultar tablas.</p>
+              </div>
+            </a>
+          </li>
+          <li><hr class="dropdown-divider"></li>
+          <li><button class="dropdown-item" (click)="logout()">Cerrar sesión</button></li>
           </ul>
 </li>
 
@@ -212,6 +211,14 @@
         <a href="#" class="text-secondary small" (click)="metodoSeleccionado = 'correo'">⬅ Volver</a>
       </div>
     </form>
+    <div *ngIf="registroPendiente" class="mt-4">
+      <form (ngSubmit)="guardarDatosUsuarioInline()" #form="ngForm">
+        <input class="form-control mb-2" placeholder="Nombre" [(ngModel)]="datosUsuario.nombre" name="nombre" required>
+        <input class="form-control mb-2" placeholder="Correo" [(ngModel)]="datosUsuario.correo" name="correo">
+        <button class="btn btn-success w-100 rounded-pill" type="submit">Guardar datos</button>
+      </form>
+    </div>
+
   }
   <div class="w-100">
       <div class="d-flex align-items-center my-3">
