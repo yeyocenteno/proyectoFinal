@@ -24,7 +24,9 @@ export interface Curso {
   providedIn: 'root'
 })
 export class CursoService {
-  private apiUrl="https://cursogym.free.beeceptor.com"
+  private apiUrl="https://cursogym2.free.beeceptor.com"
+  //private apiUrl = "http://localhost:3000/cursos";
+
 
   constructor( private http: HttpClient) {
     
@@ -33,11 +35,11 @@ export class CursoService {
     return this.http.get<Curso[]>(this.apiUrl);
   }
   obtenerCursoPorId(id: string): Observable<Curso> {
-    return this.http.get<Curso[]>(this.apiUrl).pipe(
-      map((cursos: Curso[]) => cursos.find((c: Curso) => c.id === Number(id)) as Curso)
+  return this.http.get<Curso[]>(this.apiUrl).pipe(
+    map((cursos: Curso[]) => cursos.find((c) => c.id === Number(id)) as Curso)
+  );
+}
 
-    );
-  }
 
 
 }
