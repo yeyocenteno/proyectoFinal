@@ -12,6 +12,7 @@ import { StorageComponent } from '../storage/storage.component';
 import { collection, doc, getDoc, getDocs, query, setDoc, updateDoc, where } from 'firebase/firestore';
 import { Firestore } from '@angular/fire/firestore';
 import { getAuth } from 'firebase/auth';
+import { sendPasswordResetEmail } from 'firebase/auth';
 
 
 declare var bootstrap: any;
@@ -142,18 +143,57 @@ login() {
     const data = docSnap.data() as any;
     const userRef = docSnap.ref;
 
-    if (data.bloqueado) {
-      Swal.fire('Cuenta bloqueada', 'Demasiados intentos fallidos. Contacta al administrador.', 'error');
-      return;
-    }
+// Si está bloqueado, intentamos autenticar de todos modos para verificar si cambió su contraseña
+if (data.bloqueado) {
+  this.authService.login(email, password)
+    .then(async (result) => {
+      // Si llega aquí, el login fue exitoso = el usuario cambió su contraseña
+      await updateDoc(userRef, {
+        intentosFallidos: 0,
+        bloqueado: false
+      });
+
+      Swal.fire('¡Cuenta desbloqueada!', 'Has iniciado sesión correctamente.', 'success')
+        .then(() => {
+          const modalElement = document.getElementById('adminLoginModal');
+          if (modalElement) {
+            const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
+            modalInstance.hide();
+          }
+        });
+
+      this.loginError = false;
+    })
+    .catch(() => {
+      // Si sigue fallando, le damos opción de recuperar
+      Swal.fire({
+        title: 'Cuenta bloqueada',
+        text: 'Tu cuenta sigue bloqueada. ¿Deseas restablecer tu contraseña?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, restablecer',
+        cancelButtonText: 'Cancelar'
+      }).then(result => {
+        if (result.isConfirmed) {
+          this.mostrarFormularioDesbloqueo(email);
+        }
+      });
+    });
+
+  return; // Salir para que no siga con el flujo regular
+}
+
+
 
     // Intentar login con Firebase
     this.authService.login(email, password)
       .then(async (result) => {
         // ✔️ Login exitoso: resetear contador
         await updateDoc(userRef, {
-          intentosFallidos: 0
-        });
+  intentosFallidos: 0,
+  bloqueado: false
+});
+
 
         Swal.fire({
           icon: 'success',
@@ -197,6 +237,57 @@ login() {
       });
   });
 }
+
+async mostrarFormularioDesbloqueo(email: string) {
+  const modalElement = document.getElementById('adminLoginModal');
+  if (modalElement) {
+    const modalInstance = bootstrap.Modal.getInstance(modalElement);
+    if (modalInstance) {
+      modalInstance.hide();
+    }
+  }
+
+  const confirmacion = await Swal.fire({
+    title: 'Restablecer contraseña',
+    text: 'Se enviará un correo para que puedas cambiar tu contraseña y desbloquear tu cuenta. ¿Deseas continuar?',
+    icon: 'info',
+    showCancelButton: true,
+    confirmButtonText: 'Sí, enviar',
+    cancelButtonText: 'Cancelar'
+  });
+
+  if (confirmacion.isConfirmed) {
+    this.enviarCorreoResetPassword(email);
+  }
+}
+
+
+
+
+async enviarCorreoResetPassword(email: string) {
+  try {
+    await sendPasswordResetEmail(this.auth, email);
+
+    // 🔁 Resetear intentosFallidos en Firestore
+    const usuariosRef = collection(this.firestore, 'usuarios');
+    const q = query(usuariosRef, where('correo', '==', email));
+    const snapshot = await getDocs(q);
+
+    if (!snapshot.empty) {
+      const docRef = snapshot.docs[0].ref;
+      await updateDoc(docRef, {
+        intentosFallidos: 0,
+        bloqueado: false
+      });
+    }
+
+    Swal.fire('Correo enviado', 'Revisa tu correo para cambiar tu contraseña y desbloquear tu cuenta.', 'success');
+  } catch (error: any) {
+    console.error('Error al enviar el correo de restablecimiento:', error);
+    Swal.fire('Error', error.message || 'No se pudo enviar el correo.', 'error');
+  }
+}
+
 
   get username(): string {
     if (!this.currentUser || !this.currentUser.email) return '';
