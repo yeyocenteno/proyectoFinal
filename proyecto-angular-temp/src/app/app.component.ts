@@ -5,11 +5,11 @@ import { NavbarComponent } from './componentes/navbar/navbar.component';
 import { HeaderComponent } from './componentes/header/header.component';
 import * as AOS from 'aos';
 import { EmailComponent } from './componentes/email/email.component';
-
+import { NgChartsModule } from 'ng2-charts';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, FooterComponent,NavbarComponent],
+  imports: [RouterOutlet, FooterComponent,NavbarComponent, NgChartsModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

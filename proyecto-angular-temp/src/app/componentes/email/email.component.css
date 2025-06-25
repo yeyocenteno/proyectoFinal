@@ -46,3 +46,9 @@
 .email-form button:hover {
   background-color: #0056b3;
 }
+
+input::placeholder,
+textarea::placeholder {
+  color: rgb(202, 202, 202) !important;
+  opacity: 1; /* para que sea visible */
+}

@@ -1,18 +1,55 @@
-<form (ngSubmit)="sendEmail()" #emailForm="ngForm" class="email-form">
-  <label>
-    Correo destinatario:
-    <input type="email" [(ngModel)]="email.to" name="to" placeholder="Correo destinatario" required>
-  </label>
+<form (ngSubmit)="sendEmail()" #emailForm="ngForm" 
+      class="p-4 bg-dark bg-opacity-85 rounded-4 shadow-lg mx-auto my-4" 
+      style="max-width: 480px;">
 
-  <label>
-    Asunto:
-    <input type="text" [(ngModel)]="email.subject" name="subject" placeholder="Asunto" required>
-  </label>
+  <h3 class="text-center text-warning mb-4">Enviar correo</h3>
 
-  <label>
-    Mensaje:
-    <textarea [(ngModel)]="email.message" name="message" placeholder="Mensaje" required></textarea>
-  </label>
+  <div class="mb-3">
+    <input
+      type="email"
+      [(ngModel)]="email.to"
+      name="to"
+      placeholder="Correo destinatario"
+      required
+      class="form-control form-control-lg bg-secondary bg-opacity-25 border-0 text-white placeholder-white"
+      style="::placeholder { color: white; }"
+    />
+    <small *ngIf="emailForm.submitted && !emailForm.controls['to']?.valid" class="text-danger">
+      El correo destinatario es requerido y debe ser válido.
+    </small>
+  </div>
 
-  <button type="submit">Enviar correo</button>
+  <div class="mb-3">
+    <input
+      type="text"
+      [(ngModel)]="email.subject"
+      name="subject"
+      placeholder="Asunto"
+      required
+      class="form-control form-control-lg bg-secondary bg-opacity-25 border-0 text-white placeholder-white"
+      style="::placeholder { color: white; }"
+    />
+    <small *ngIf="emailForm.submitted && !emailForm.controls['subject']?.valid" class="text-danger">
+      El asunto es requerido.
+    </small>
+  </div>
+
+  <div class="mb-4">
+    <textarea
+      [(ngModel)]="email.message"
+      name="message"
+      placeholder="Mensaje"
+      required
+      rows="5"
+      class="form-control form-control-lg bg-secondary bg-opacity-25 border-0 text-white placeholder-white"
+      style="::placeholder { color: white; }"
+    ></textarea>
+    <small *ngIf="emailForm.submitted && !emailForm.controls['message']?.valid" class="text-danger">
+      El mensaje es requerido.
+    </small>
+  </div>
+
+  <button type="submit" class="btn btn-warning btn-lg w-100 fw-bold rounded-pill" [disabled]="emailForm.invalid">
+    Enviar correo
+  </button>
 </form>

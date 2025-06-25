@@ -1,4 +1,15 @@
-<div class="p-4 bg-white rounded shadow">
-  <h4 class="text-center mb-4">📊 Suscripciones por Plan</h4>
-  
+<div style="max-width: 700px; margin: 20px auto; padding: 15px; border: 1px solid #ccc; border-radius: 12px; background-color: #f9f9f9; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+  <h3 style="text-align: center; margin-bottom: 15px; font-weight: 600; color: #333;">
+    Inscripciones por Plan
+  </h3>
+
+  <canvas baseChart
+          [data]="barChartData"
+          [options]="barChartOptions"
+          [type]="'bar'">
+  </canvas>
+
+  <p style="text-align: center; margin-top: 12px; font-size: 0.9rem; color: #666;">
+    Esta gráfica muestra la cantidad de usuarios inscritos en cada plan: Básico, Intermedio y Avanzado.
+  </p>
 </div>

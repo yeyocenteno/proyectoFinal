@@ -61,3 +61,25 @@
   max-width: 400px;
   margin: 0 auto;
 }
+
+input::placeholder,
+textarea::placeholder {
+  color: rgb(202, 202, 202) !important;
+  opacity: 1; /* para que sea visible */
+}
+
+.form-select {
+  color: white !important; /* texto blanco */
+  border: none !important;
+}
+
+.form-select option {
+  background-color: rgba(33, 37, 41, 0.85); /* fondo oscuro para opciones */
+  color: white; /* texto blanco */
+}
+
+.form-select option:hover,
+.form-select option:focus {
+  background-color: rgba(255, 193, 7, 0.3); /* opcional: color distinto al pasar el mouse */
+  color: black;
+}

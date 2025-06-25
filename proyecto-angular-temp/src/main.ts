@@ -13,6 +13,7 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getDatabase, provideDatabase } from '@angular/fire/database';
 import { firebaseConfig } from './app/firebase.config';
 import { getStorage, provideStorage } from '@angular/fire/storage';
+import { NgChartsModule } from 'ng2-charts';
 
 bootstrapApplication(AppComponent,  {
   providers: [

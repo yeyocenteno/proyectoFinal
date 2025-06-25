@@ -56,3 +56,9 @@
 .btn-primary:hover {
   background-color: #f39c12;
 }
+
+input::placeholder,
+textarea::placeholder {
+  color: rgb(202, 202, 202) !important;
+  opacity: 1; /* para que sea visible */
+}
