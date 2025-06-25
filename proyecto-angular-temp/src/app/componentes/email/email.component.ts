@@ -20,7 +20,7 @@ export class EmailComponent {
   constructor(private http: HttpClient) {}
 
   sendEmail() {
-    this.http.post('http://localhost:3000/send-email', this.email)
+    this.http.post('http://localhost:3001/send-email', this.email)
       .subscribe({
         next: () => alert('Correo enviado'),
         error: (err) => console.error('Error al enviar correo', err)
