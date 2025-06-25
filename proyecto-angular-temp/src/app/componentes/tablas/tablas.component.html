@@ -15,25 +15,59 @@
         </tr>
       </thead>
       <tbody>
-        @for (suscripcion of suscripciones; let i = $index; track suscripcion) {
+        @for (s of suscripciones; track s) {
           <tr>
-            <td>{{ suscripcion.nombre }}</td>
-            <td>{{ suscripcion.correo }}</td>
-            <td>{{ suscripcion.fecha }}</td>
-            <td>{{ suscripcion.plan }}</td>
             <td>
-              <ul>
-                @for (objetivo of suscripcion.objetivos; let j = $index; track objetivo) {
-                  @if (objetivo) {
-                    <li>{{ ['Perder peso', 'Ganar masa muscular', 'Mantener condición'][j] }}</li>
-                  }
-                }
-              </ul>
+              @if (editandoSuscripcion?.id === s.id) {
+                <input [(ngModel)]="editandoSuscripcion.nombre" />
+              } @else {
+                {{ s.nombre }}
+              }
             </td>
-            <td>{{ suscripcion.genero }}</td>
             <td>
-              <button (click)="editarRegistro('suscripcion', i)">Editar</button>
-              <button (click)="eliminarSuscripcion(i)">Eliminar</button>
+              @if (editandoSuscripcion?.id === s.id) {
+                <input [(ngModel)]="editandoSuscripcion.correo" />
+              } @else {
+                {{ s.correo }}
+              }
+            </td>
+            <td>
+              @if (editandoSuscripcion?.id === s.id) {
+                <input type="date" [(ngModel)]="editandoSuscripcion.fecha" />
+              } @else {
+                {{ s.fecha }}
+              }
+            </td>
+            <td>
+              @if (editandoSuscripcion?.id === s.id) {
+                <select [(ngModel)]="editandoSuscripcion.plan">
+                  <option>Básico</option>
+                  <option>Intermedio</option>
+                  <option>Avanzado</option>
+                </select>
+              } @else {
+                {{ s.plan }}
+              }
+            </td>
+            <td>
+              @if (editandoSuscripcion?.id === s.id) {
+                <select [(ngModel)]="editandoSuscripcion.genero">
+                  <option>Masculino</option>
+                  <option>Femenino</option>
+                  <option>Otro</option>
+                </select>
+              } @else {
+                {{ s.genero }}
+              }
+            </td>
+            <td>
+              @if (editandoSuscripcion?.id === s.id) {
+                <button (click)="guardarCambiosSuscripcion()">Guardar</button>
+                <button (click)="cancelarEdicionSuscripcion()">Cancelar</button>
+              } @else {
+                <button (click)="iniciarEdicionSuscripcion(s)">Editar</button>
+              }
+              <button (click)="eliminarSuscripcion(s.id)">Eliminar</button>
             </td>
           </tr>
         }
@@ -61,23 +95,55 @@
         </tr>
       </thead>
       <tbody>
-        @for (queja of quejas; let i = $index; track queja) {
+        @for (q of quejas; track q) {
           <tr>
-            <td>{{ queja.nombre }}</td>
-            <td>{{ queja.correo }}</td>
-            <td>{{ queja.motivo }}</td>
-            <td>{{ queja.fecha }}</td>
             <td>
-              <ul>
-                @for (opcion of queja.opciones; let j = $index; track $index){
-                  <li>{{ opcion }}</li>
-                }
-              </ul>
+              @if (editandoQueja?.id === q.id) {
+                <input [(ngModel)]="editandoQueja.nombre" />
+              } @else {
+                {{ q.nombre }}
+              }
             </td>
-            <td>{{ queja.gravedad }}</td>
             <td>
-              <button (click)="editarRegistro('queja', i)">Editar</button>
-              <button (click)="eliminarQueja(i)">Eliminar</button>
+              @if (editandoQueja?.id === q.id) {
+                <input [(ngModel)]="editandoQueja.correo" />
+              } @else {
+                {{ q.correo }}
+              }
+            </td>
+            <td>
+              @if (editandoQueja?.id === q.id) {
+                <input [(ngModel)]="editandoQueja.motivo" />
+              } @else {
+                {{ q.motivo }}
+              }
+            </td>
+            <td>
+              @if (editandoQueja?.id === q.id) {
+                <input type="date" [(ngModel)]="editandoQueja.fecha" />
+              } @else {
+                {{ q.fecha }}
+              }
+            </td>
+            <td>
+              @if (editandoQueja?.id === q.id) {
+                <select [(ngModel)]="editandoQueja.gravedad">
+                  <option>Baja</option>
+                  <option>Media</option>
+                  <option>Alta</option>
+                </select>
+              } @else {
+                {{ q.gravedad }}
+              }
+            </td>
+            <td>
+              @if (editandoQueja?.id === q.id) {
+                <button (click)="guardarCambiosQueja()">Guardar</button>
+                <button (click)="cancelarEdicionQueja()">Cancelar</button>
+              } @else {
+                <button (click)="iniciarEdicionQueja(q)">Editar</button>
+              }
+              <button (click)="eliminarQueja(q.id)">Eliminar</button>
             </td>
           </tr>
         }
