@@ -24,7 +24,7 @@ export interface Curso {
   providedIn: 'root'
 })
 export class CursoService {
-  private apiUrl="https://cursogym2.free.beeceptor.com"
+  private apiUrl="https://cursogym.free.beeceptor.com"
   //private apiUrl = "http://localhost:3000/cursos";
 
 

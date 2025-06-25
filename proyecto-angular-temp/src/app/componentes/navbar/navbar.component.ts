@@ -263,8 +263,6 @@ async mostrarFormularioDesbloqueo(email: string) {
 }
 
 
-
-
 async enviarCorreoResetPassword(email: string) {
   try {
     await sendPasswordResetEmail(this.auth, email);
