@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
@@ -57,6 +57,7 @@ export class NavbarComponent {
     correo: ''
   };
   registroPendiente = false;
+  @ViewChild('navbarCollapse', { static: false }) navbarCollapse!: ElementRef;
 
   // Constructor que inyecta el servicio de autenticación
   constructor(private authService: AuthService, private router : Router, private firestore: Firestore) {
@@ -477,5 +478,13 @@ guardarDatosUsuarioInline() {
     this.registroPendiente = false;
   });
 }
+
+cerrarMenu() {
+    const collapseEl = this.navbarCollapse?.nativeElement;
+    if (collapseEl && collapseEl.classList.contains('show')) {
+      const bsCollapse = new bootstrap.Collapse(collapseEl, { toggle: false });
+      bsCollapse.hide();
+    }
+  }
 
 }

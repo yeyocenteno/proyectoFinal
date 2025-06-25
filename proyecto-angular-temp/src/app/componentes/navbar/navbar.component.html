@@ -9,19 +9,19 @@
       <span class="navbar-toggler-icon"></span>
     </button> 
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div #navbarCollapse class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link" routerLink="/inicio" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Inicio</a>
+          <a class="nav-link" routerLink="/inicio" (click)="cerrarMenu()" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Inicio</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link px-3 py-2 rounded-pill" routerLink="/curso" routerLinkActive="active">Cursos</a>
+          <a class="nav-link px-3 py-2 rounded-pill" routerLink="/curso" (click)="cerrarMenu()" routerLinkActive="active">Cursos</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link px-3 py-2 rounded-pill" routerLink="/nosotros" routerLinkActive="active">Nosotros</a>
+          <a class="nav-link px-3 py-2 rounded-pill" routerLink="/nosotros" (click)="cerrarMenu()" routerLinkActive="active">Nosotros</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link px-3 py-2 rounded-pill" routerLink="/suscripcion" routerLinkActive="active">Suscripción</a>
+          <a class="nav-link px-3 py-2 rounded-pill" routerLink="/suscripcion" (click)="cerrarMenu()" routerLinkActive="active">Suscripción</a>
         </li>
         <button 
           *ngIf="showInstallButton" 

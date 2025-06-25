@@ -99,8 +99,6 @@
           </div>
 
         </form>
-
-        <app-qr></app-qr>
       } @else {
         <div class="alert alert-warning text-center">
           <h4>⚠️ Debes iniciar sesión para suscribirte.</h4>
@@ -109,6 +107,9 @@
       }
     </div>
   </div>
+  @if(currentUserUid){
+    <app-qr></app-qr>
+  }
 
   <div class="video-container text-center mt-5" [ngStyle]="videoEstilos">
     <iframe width="560" height="315"

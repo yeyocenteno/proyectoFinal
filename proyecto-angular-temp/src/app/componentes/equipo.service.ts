@@ -43,7 +43,7 @@ export class EquipoService {
       nombre: 'Reyli Uvaldo Martinez Hernandez',
       id: '347301',
       edad: 20,
-      foto: 'assets/jaime.jpg',
+      foto: 'assets/reyli.jpg',
       carrera: 'Ing. en Sistemas Computacionales',
       semestre: '6° C'
     },
