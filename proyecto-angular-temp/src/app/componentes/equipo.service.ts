@@ -17,7 +17,7 @@ export class EquipoService {
   private integrantes: Integrante[] = [
     {
       nombre: 'Tadeo Andrade Sustaita',
-      id: '281466',
+      id: '353079',
       edad: 20,
       foto: 'assets/tadeo.jpg',
       carrera: 'Ing. en Sistemas Computacionales',
@@ -41,15 +41,15 @@ export class EquipoService {
     },
     {
       nombre: 'Reyli Uvaldo Martinez Hernandez',
-      id: '347301',
+      id: '350944',
       edad: 20,
       foto: 'assets/reyli.jpg',
       carrera: 'Ing. en Sistemas Computacionales',
       semestre: '6° C'
     },
     {
-      nombre: 'Juan Carlos Uriarte PAdilla',
-      id: '347301',
+      nombre: 'Juan Carlos Uriarte Padilla',
+      id: '281537',
       edad: 20,
       foto: 'assets/juanca.jpg',
       carrera: 'Ing. en Sistemas Computacionales',
