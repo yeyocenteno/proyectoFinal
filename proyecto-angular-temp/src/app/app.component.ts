@@ -7,10 +7,9 @@ import * as AOS from 'aos';
 import { EmailComponent } from './componentes/email/email.component';
 
 
-
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, FooterComponent,NavbarComponent,HeaderComponent, EmailComponent],
+  imports: [RouterOutlet, FooterComponent,NavbarComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

@@ -12,11 +12,12 @@ import { FormsModule } from '@angular/forms';
 import { collectionData } from '@angular/fire/firestore';
 import Swal from 'sweetalert2';
 import { EmailComponent } from '../../componentes/email/email.component';
+import { GraficaComponent } from '../../componentes/grafica/grafica.component';
 
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule, EmailComponent],
+  imports: [CommonModule, FormsModule, EmailComponent, GraficaComponent],
   templateUrl: './admin-dashboard.component.html'
 })
 export class AdminDashboardComponent {

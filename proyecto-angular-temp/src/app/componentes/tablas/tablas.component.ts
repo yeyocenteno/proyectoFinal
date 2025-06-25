@@ -4,10 +4,11 @@ import Swal from 'sweetalert2';
 import { EquipoService, Integrante } from '../equipo.service';
 import { Router } from '@angular/router';
 import { AdminDashboardComponent } from '../../components/admin-dashboard/admin-dashboard.component';
+import { GraficaComponent } from '../grafica/grafica.component';
 
 @Component({
   selector: 'app-tablas',
-  imports: [CommonModule, AdminDashboardComponent],
+  imports: [CommonModule],
   templateUrl: './tablas.component.html',
   styleUrl: './tablas.component.css'
 })
