@@ -1,52 +1,94 @@
 <div class="container mt-5">
-  <h2 class="mb-4">Panel de Administración</h2>
+  <h2 class="mb-4 text-center">Panel de Administración</h2>
 
-  <div *ngIf="datos.length === 0" class="alert alert-info">
-    No hay datos registrados aún.
-  </div>
+  <!-- Tabla Usuarios -->
+  <section class="mb-5 p-4 bg-light rounded shadow-sm">
+    <h4 class="mb-3">Usuarios Registrados</h4>
 
-  <table *ngIf="datos.length > 0" class="table table-bordered table-striped">
-    <thead class="table-dark">
-      <tr>
-        <th>Nombre</th>
-        <th>Correo</th>
-        <th>Foto</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let usuario of datos">
-        <td *ngIf="editando?.id !== usuario.id">{{ usuario.nombre }}</td>
-        <td *ngIf="editando?.id === usuario.id">
-          <input [(ngModel)]="editando.nombre" class="form-control">
-        </td>
+    <div *ngIf="datos.length === 0" class="alert alert-info">
+      No hay datos registrados aún.
+    </div>
 
-        <td *ngIf="editando?.id !== usuario.id">{{ usuario.correo }}</td>
-        <td *ngIf="editando?.id === usuario.id">
-          <input [(ngModel)]="editando.correo" class="form-control">
-        </td>
+    <table *ngIf="datos.length > 0" class="table table-bordered table-striped align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th>Nombre</th>
+          <th>Correo</th>
+          <th>Foto</th>
+          <th class="text-center">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let usuario of datos">
+          <td *ngIf="editando?.id !== usuario.id">{{ usuario.nombre }}</td>
+          <td *ngIf="editando?.id === usuario.id">
+            <input [(ngModel)]="editando.nombre" class="form-control" />
+          </td>
 
-        <td>
-          <img [src]="usuario.photoURL || 'assets/profile-placeholder.jpg'" alt="Foto" width="40">
-        </td>
+          <td *ngIf="editando?.id !== usuario.id">{{ usuario.correo }}</td>
+          <td *ngIf="editando?.id === usuario.id">
+            <input [(ngModel)]="editando.correo" class="form-control" />
+          </td>
 
-        <td>
-          <ng-container *ngIf="editando?.id !== usuario.id; else editandoBtns">
-            <button class="btn btn-sm btn-warning me-2" (click)="iniciarEdicion(usuario)">Editar</button>
-            <button class="btn btn-sm btn-danger" (click)="eliminarUsuario(usuario.id)">Eliminar</button>
-          </ng-container>
-          <ng-template #editandoBtns>
-            <button class="btn btn-sm btn-success me-2" (click)="guardarCambios()">Guardar</button>
-            <button class="btn btn-sm btn-secondary" (click)="cancelarEdicion()">Cancelar</button>
-          </ng-template>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+          <td class="text-center">
+            <img
+              [src]="usuario.photoURL || 'assets/profile-placeholder.jpg'"
+              alt="Foto"
+              width="40"
+              height="40"
+              class="rounded-circle"
+              style="object-fit: cover;"
+            />
+          </td>
+
+          <td class="text-center">
+            <ng-container *ngIf="editando?.id !== usuario.id; else editandoBtns">
+              <button
+                class="btn btn-sm btn-warning me-2"
+                (click)="iniciarEdicion(usuario)"
+                title="Editar usuario"
+              >
+                <i class="fas fa-edit"></i>
+              </button>
+              <button
+                class="btn btn-sm btn-danger"
+                (click)="eliminarUsuario(usuario.id)"
+                title="Eliminar usuario"
+              >
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </ng-container>
+            <ng-template #editandoBtns>
+              <button
+                class="btn btn-sm btn-success me-2"
+                (click)="guardarCambios()"
+                title="Guardar cambios"
+              >
+                <i class="fas fa-save"></i>
+              </button>
+              <button
+                class="btn btn-sm btn-secondary"
+                (click)="cancelarEdicion()"
+                title="Cancelar edición"
+              >
+                <i class="fas fa-times"></i>
+              </button>
+            </ng-template>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Gráfica -->
+  <section class="mb-5 p-4 bg-light rounded shadow-sm">
+    <h4 class="mb-3">Estadísticas de Suscripciones</h4>
+    <app-grafica></app-grafica>
+  </section>
+
+  <!-- Envío de Email -->
+  <section class="mb-5 p-4 bg-light rounded shadow-sm">
+    <h4 class="mb-3">Enviar correo electrónico</h4>
+    <app-email></app-email>
+  </section>
 </div>
-
-<div style="margin-top: 80px;">
-  <app-grafica></app-grafica>
-</div>
-
-<app-email></app-email>
