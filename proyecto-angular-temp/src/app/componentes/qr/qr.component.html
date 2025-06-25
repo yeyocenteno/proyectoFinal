@@ -1,0 +1,14 @@
+<div class="text-center mt-4 mb-4">
+    <button class="btn btn-warning" (click)="getData(currentUserUid!)" [disabled]="!currentUserUid">
+    Generar mi QR
+    </button>
+
+
+  <div *ngIf="qrData" class="mt-4">
+    <qrcode 
+      [qrdata]="qrData" 
+      [width]="256" 
+      [errorCorrectionLevel]="'M'">
+    </qrcode>
+  </div>
+</div>

@@ -16,7 +16,11 @@ import { EmailComponent } from './componentes/email/email.component';
 })
 export class AppComponent {
   title = 'proyecto-angular-temp';
+  qrData: string;
 
+  constructor() {
+    this.qrData = 'Datos dinámicos aquí';
+  }
   ngOnInit() {
     AOS.init();
   }

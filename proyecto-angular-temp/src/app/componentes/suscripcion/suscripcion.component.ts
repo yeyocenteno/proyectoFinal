@@ -9,11 +9,12 @@ import { AuthService } from '../../services/auth.service';
 import { Firestore } from '@angular/fire/firestore';
 import { addDoc, collection } from 'firebase/firestore';
 import { AfterViewChecked } from '@angular/core';
+import { QrComponent } from '../qr/qr.component';
 declare var paypal: any;
 
 @Component({
   selector: 'app-suscripcion',
-  imports: [CommonModule,ReactiveFormsModule,PlanesComponent,DomseguroPipe],
+  imports: [CommonModule,ReactiveFormsModule,PlanesComponent,DomseguroPipe, QrComponent],
   templateUrl: './suscripcion.component.html',
   styleUrl: './suscripcion.component.css'
 })
@@ -26,8 +27,8 @@ export class SuscripcionComponent implements AfterViewChecked {
   hovering = false;
   video:string="I_RYujJvZ7s"; // videoo
   currentUserEmail: string | null = null;
-
-indiceEditando = -1;
+  currentUserUid: string | null = null;
+  indiceEditando = -1;
 
   constructor(private fb: FormBuilder, private authService: AuthService, private firestore: Firestore) {
     const fechaMinima = new Date();
@@ -47,6 +48,7 @@ indiceEditando = -1;
 ngOnInit() {
   this.authService.user$.subscribe(user => {
     this.currentUserEmail = user?.email || null;
+    this.currentUserUid = user?.uid || null; // ← Aquí obtienes el UID
   });
 
   const registro = localStorage.getItem('registroEditando');
@@ -172,6 +174,7 @@ async onSubmit() {
       const data = {
         ...this.suscripcionForm.value,
         emailUsuario: this.currentUserEmail,
+        uid: this.currentUserUid,
         fechaRegistro: new Date()
       };
 

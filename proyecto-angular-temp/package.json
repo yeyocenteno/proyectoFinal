@@ -23,6 +23,7 @@
     "@angular/service-worker": "^19.2.14",
     "@paypal/paypal-server-sdk": "^1.0.0",
     "angular-cli-ghpages": "^2.0.3",
+    "angularx-qrcode": "^19.0.0",
     "aos": "^2.3.4",
     "bcrypt": "^6.0.0",
     "bootstrap": "^5.3.5",
