@@ -1,36 +1,40 @@
 <div class="contenedor">
-<app-busqueda (searchChanged)="busqueda($event)"></app-busqueda>
+  <app-busqueda (searchChanged)="busqueda($event)"></app-busqueda>
 
-<div class="cursos-container mt-5">
-  @if(loading){
-    <div class="loading-overlay">
-    <div class="spinner-border text-warning" role="status">
+  <div class="cursos-container mt-5">
+    <div *ngIf="loading" class="loading-overlay">
+      <div class="spinner-border text-warning" role="status">
         <span class="visually-hidden">Cargando cursos...</span>
       </div>
       <p class="text-light mt-3">Cargando cursos, por favor espera...</p>
-      </div>
-  }@else{
-  @if (cursosFiltrados.length > 0) {
-    <div class="grid-container">
-      @for (curso of cursosFiltrados; track curso.id) {
-        <div class="curso-card">
-          <a [routerLink]="['/curso', curso.id]" class="curso-link">
-            <img [src]="curso.imagen" alt="{{ curso.nombre }}" class="curso-image" />
+    </div>
+
+    <div *ngIf="!loading">
+      <div *ngIf="cursosFiltrados.length > 0" class="grid-container">
+        <div *ngFor="let curso of cursosFiltrados; trackBy: trackById" class="curso-card" (mouseenter)="curso.hover=true" (mouseleave)="curso.hover=false">
+
+          <a [routerLink]="['/curso', curso.id_clase]" class="curso-link">
+            <img [src]="curso.imagen_url" alt="{{ curso.nombre }}" class="curso-image" />
             <h2 class="curso-title">{{ curso.nombre }}</h2>
 
             <div class="curso-info">
-              <p><strong>Cupos:</strong> {{ curso.cupos ?? 'No especificado' }}</p>
-              <p><strong>Horarios:</strong> {{ curso.horarios?.join(', ') ?? 'No especificado' }}</p>
-              <p><strong>Instructor:</strong> {{ curso.instructor ?? 'No especificado' }}</p>
+              <p><strong>Cupos:</strong> {{ curso.capacidad ?? 'No especificado' }}</p>
+              <p><strong>Horarios:</strong> {{ curso.horario ?? 'No especificado' }}</p>
+              <p><strong>Instructor:</strong> {{ curso.entrenador ?? 'No especificado' }}</p>
               <p><strong>Descripción:</strong> {{ curso.descripcion }}</p>
             </div>
           </a>
-        </div>
-      }
-    </div>
-  } @else {
-    <p class="loading-message">No se encontraron cursos con ese nombre.</p>
-  }}
-</div>
 
+
+          <div class="admin-icons">
+            <button class="icon-btn delete" (click)="eliminarCurso(curso.id_clase)">✖</button>
+            <button class="icon-btn edit" (click)="editarCurso(curso)">✎</button>
+          </div>
+
+        </div>
+      </div>
+
+      <p *ngIf="cursosFiltrados.length === 0" class="loading-message">No se encontraron cursos con ese nombre.</p>
+    </div>
+  </div>
 </div>

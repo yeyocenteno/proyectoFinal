@@ -1,32 +1,72 @@
 <form [formGroup]="registroForm" (ngSubmit)="registrarUsuario()" class="w-100" style="max-width: 320px; margin-bottom: 20px;">
+  
+  <!-- 1. Nombre (Estaba en DB y HTML) -->
   <div class="mb-3">
     <label for="nombre" class="form-label">Nombre completo</label>
     <input type="text" class="form-control" id="nombre" formControlName="nombre" placeholder="Tu nombre completo">
+    <div class="text-danger small" *ngIf="registroForm.get('nombre')?.invalid && registroForm.get('nombre')?.touched">
+      El nombre es requerido.
+    </div>
   </div>
 
+  <!-- 2. Edad (Estaba en DB, Nuevo en HTML) -->
+  <div class="mb-3">
+    <label for="edad" class="form-label">Edad</label>
+    <input type="number" class="form-control" id="edad" formControlName="edad" placeholder="Ej: 25">
+    <div class="text-danger small" *ngIf="registroForm.get('edad')?.invalid && registroForm.get('edad')?.touched">
+      Debes ser mayor de edad.
+    </div>
+  </div>
+
+  <!-- 3. Sexo (Estaba en DB, Nuevo en HTML) -->
+  <div class="mb-3">
+    <label for="sexo" class="form-label">Sexo</label>
+    <select class="form-select" id="sexo" formControlName="sexo">
+      <option value="" disabled selected>Selecciona una opción</option>
+      <option value="M">Masculino</option>
+      <option value="F">Femenino</option>
+      <option value="O">Otro</option>
+    </select>
+  </div>
+
+  <!-- 4. Teléfono (Estaba en DB, Nuevo en HTML) -->
+  <div class="mb-3">
+    <label for="telefono" class="form-label">Teléfono</label>
+    <input type="tel" class="form-control" id="telefono" formControlName="telefono" placeholder="555-000-0000">
+  </div>
+
+  <!-- 5. Dirección (Estaba en DB, Nuevo en HTML) -->
+  <div class="mb-3">
+    <label for="direccion" class="form-label">Dirección</label>
+    <input type="text" class="form-control" id="direccion" formControlName="direccion" placeholder="Calle y número">
+  </div>
+
+  <!-- 6. Correo (Estaba en DB y HTML) -->
   <div class="mb-3">
     <label for="correo" class="form-label">Correo electrónico</label>
     <input type="email" class="form-control" id="correo" formControlName="correo" placeholder="usuario@correo.com">
   </div>
 
-    <!-- 🔽 Nuevo selector para el rol -->
+  <!-- 7. Rol (Estaba en HTML, Nuevo para DB) -->
   <div class="mb-3">
     <label for="rol" class="form-label">Selecciona tu rol</label>
-    <select class="form-select form-select" id="rol" formControlName="rol">
+    <select class="form-select" id="rol" formControlName="rol">
       <option value="usuario">Usuario</option>
       <option value="admin">Administrador</option>
+      <option value="entrenador">Entrenador</option>
     </select>
   </div>
 
-
+  <!-- 8. Contraseña (Estaba en HTML, Nuevo para DB) -->
   <div class="mb-3">
     <label for="contrasena" class="form-label">Contraseña</label>
     <input type="password" class="form-control" id="contrasena" formControlName="contrasena" placeholder="Contraseña">
     <div class="form-text text-danger" *ngIf="registroForm.get('contrasena')?.invalid && registroForm.get('contrasena')?.touched">
-      La contraseña debe tener 6-12 caracteres, una mayúscula, un número y solo letras/dígitos/_.
+      La contraseña debe tener 6-12 caracteres, una mayúscula, un número y caracteres especiales.
     </div>
   </div>
 
+  <!-- 9. Confirmar Contraseña (Solo HTML, no se guarda en DB) -->
   <div class="mb-3">
     <label for="confirmar" class="form-label">Confirmar contraseña</label>
     <input type="password" class="form-control" id="confirmar" formControlName="confirmarContrasena" placeholder="Confirma tu contraseña">
@@ -35,11 +75,11 @@
     </div>
   </div>
 
-  <!-- Sección para subir foto de perfil -->
+  <!-- 10. Foto (Estaba en DB y HTML) 
   <div class="mb-3">
     <label for="foto" class="form-label">Foto de perfil</label>
-    <input type="file" id="foto" class="form-control" (change)="onFileSelected($event)">
-  </div>
+    <input type="file" id="foto" class="form-control" (change)="onFileSelected($event)" accept="image/*">
+  </div> -->
 
   <button class="btn btn-primary w-100" type="submit" [disabled]="registroForm.invalid">Registrar</button>
 </form>

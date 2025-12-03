@@ -68,27 +68,91 @@ export class NavbarComponent {
 
  // Método que se ejecuta al inicializar el componente
   ngOnInit(): void {
-    this.authService.user$.subscribe(async (user) => {
+  this.authService.user$.subscribe(async (user) => {
     this.currentUser = user;
 
     if (user) {
       const docRef = doc(this.firestore, `usuarios/${user.uid}`);
       const docSnap = await getDoc(docRef);
+
       if (docSnap.exists()) {
         const data = docSnap.data() as any;
-        this.admin = data.rol === 'admin'; 
-        if (data.fotoPerfil) {
-          this.fotoPerfilURL = data.fotoPerfil;
-        }
+
+        // Precargar datos en el modal
+        this.loginForm.email = data.correo || '';
+        this.datosUsuario.nombre = data.nombre || '';
+        this.datosUsuario.correo = data.correo || '';
+        this.telefono = data.telefono || '';
+        this.admin = data.rol === 'admin';
+
+        // Foto de perfil
+        this.fotoPerfilURL = data.fotoPerfil || 'assets/profile-placeholder.jpg';
+      } else {
+        // Si no existe, mostrar formulario inline de registro
+        this.registroPendiente = true;
       }
     }
   });
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault(); // Evitar que el navegador muestre el prompt por defecto
-      this.deferredPrompt = e; // Guardar el evento para lanzarlo luego
-      this.showInstallButton = true; // Mostrar botón de instalación en UI
-    });
+}
+
+loginPG() {
+  const { email, password } = this.loginForm;
+
+  if (!email || !password) {
+    Swal.fire('Error', 'Debes ingresar correo y contraseña', 'warning');
+    return;
   }
+
+  // Llamada al backend Node/Express con PostgreSQL
+  fetch('http://localhost:3000/api/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    // CORRECCIÓN 1: Mapear los nombres a lo que espera la base de datos (correo/contrasena)
+    body: JSON.stringify({ correo: email, contrasena: password }) 
+  })
+    .then(async res => {
+      const data = await res.json();
+
+      // CORRECCIÓN 2: Eliminar check de !data.success porque tu backend no lo envía.
+      // Basta con verificar res.ok (que sea status 200)
+      if (!res.ok) {
+        throw new Error(data.error || 'Usuario o contraseña incorrectos');
+      }
+
+      // Login exitoso
+      // Nota: data.usuario.nombre viene del backend
+      Swal.fire('¡Bienvenido!', `Hola ${data.usuario.nombre}`, 'success').then(() => {
+        const modalEl = document.getElementById('adminLoginModal');
+        if (modalEl) {
+          const modalInstance = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+          modalInstance.hide();
+        }
+
+        // Guardar rol/admin para UI
+        // OJO: Tu backend actual devuelve id_cliente, nombre y correo. 
+        // No está devolviendo el 'rol'. Asegúrate de que tu backend devuelva el rol si lo necesitas aquí.
+        // Si no, esto será undefined.
+        this.admin = data.usuario.rol === 'admin'; 
+        this.rolUsuario = data.usuario.rol; 
+        
+        // Actualizar datos del usuario localmente para mostrar en el navbar
+        this.currentUser = { email: data.usuario.correo } as any; 
+        this.username; // Forzar actualización si es getter
+      });
+
+      this.loginError = false;
+    })
+    .catch(err => {
+      console.error(err);
+      this.loginError = true;
+      Swal.fire('Error', err.message || 'Usuario o contraseña incorrectos', 'error');
+    });
+}
+
+mostrarVistaCorreo() {
+  this.metodoSeleccionado = 'correo';
+}
+
 
   actualizarFotoPerfil(nuevaFoto: string) {
     this.fotoPerfil = nuevaFoto;
@@ -115,6 +179,7 @@ export class NavbarComponent {
     this.mostrarRegistro = !this.mostrarRegistro;
   }
 
+  /*
 login() {
   const captchaResponse = (window as any).grecaptcha?.getResponse();
 
@@ -238,6 +303,8 @@ if (data.bloqueado) {
       });
   });
 }
+
+*/
 
 async mostrarFormularioDesbloqueo(email: string) {
   const modalElement = document.getElementById('adminLoginModal');

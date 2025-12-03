@@ -1,11 +1,22 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { Queja } from '../queja.interface';
 import { CommonModule } from '@angular/common';
 import { EquipoService, Integrante } from '../equipo.service';
 import { AuthService } from '../../services/auth.service';
 import { Firestore, collection,addDoc } from '@angular/fire/firestore';
+import { HttpClient } from '@angular/common/http';
+
+interface Entrenador {
+  id_entrenador: number;
+  nombre: string;
+  especialidad: string;
+  horario: string;
+  correo: string;
+  telefono: string;
+  foto?: string; // Opcional, si quieres agregar imagen
+}
 
 @Component({
   selector: 'app-nosotros',
@@ -15,148 +26,136 @@ import { Firestore, collection,addDoc } from '@angular/fire/firestore';
   styleUrl: './nosotros.component.css'
 })
 export class NosotrosComponent {
-  currentUserEmail: string | null = null;
-  integrantes: Integrante[] = [];
-  queja: Queja = {
-    nombre: '',
-    correo: '',
-    motivo: '',
-    fecha: '',
-    opciones: [],
-    gravedad: ''
-  };
-  hoy = new Date().toISOString().split('T')[0]; // Para restringir la fecha al día actual o anterior
-  motivos: string[] = ['Instalaciones', 'Entrenadores', 'Cobros', 'Otros'];
-  opcionesDisponibles: string[] = ['Ruido excesivo', 'Malos tratos', 'Equipos dañados'];
-  submitted = false;
-  editando = false;
-  indiceEditando = -1;
+ entrenadores: Entrenador[] = [];
+  loading: boolean = true;
+  error: string = '';
 
+  nuevoEntrenador: Partial<Entrenador> = {};
+  successMessage: string = '';
+  errorMessage: string = '';
 
-  constructor(private equipoService: EquipoService, private authService: AuthService, private firestore: Firestore) {}
+  // Cambia el URL a tu backend si es necesario
+  private backendUrl = 'http://localhost:3000/entrenadores';
+
+  constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
-    
-    this.authService.user$.subscribe(user => {
-    this.currentUserEmail = user?.email || null;
-  });
+    this.cargarEntrenadores();
+  }
 
-  this.integrantes = this.equipoService.getIntegrantes();
-
-  const registro = localStorage.getItem('registroEditando');
-  if (registro) {
-    const { tipo, index } = JSON.parse(registro);
-    if (tipo === 'queja') {
-      const quejas = JSON.parse(localStorage.getItem('quejas') || '[]');
-      const datos = quejas[index];
-      if (datos) {
-        this.editando = true;
-        this.indiceEditando = index;
-        this.queja = { ...datos }; // copia segura
+   cargarEntrenadores(): void {
+    this.loading = true;
+    this.http.get<Entrenador[]>(this.backendUrl).subscribe({
+      next: (data) => {
+        this.entrenadores = data;
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Error cargando entrenadores:', err);
+        this.error = 'No se pudo cargar la lista de entrenadores';
+        this.loading = false;
       }
+    });
+  }
+
+  agregarEntrenador(form: NgForm): void {
+    this.successMessage = '';
+    this.errorMessage = '';
+
+    if (!form.valid) {
+      this.errorMessage = 'Por favor completa todos los campos requeridos.';
+      return;
     }
-  }
-}
 
-
-  isValid(): boolean {
-  return (
-    this.queja.nombre.length >= 10 &&
-    this.validateEmail(this.queja.correo) &&
-    this.queja.motivo.length >= 10 &&
-    this.queja.fecha !== '' &&
-    this.esFechaEnRangoValido() &&
-    this.queja.opciones.length > 0 &&
-    this.queja.gravedad !== ''
-  );
-}
-
-
-esFechaEnRangoValido(): boolean {
-  if (!this.queja.fecha) return false;
-
-  const fechaSeleccionada = new Date(this.queja.fecha);
-  const hoy = this.getToday();
-
-  const diezDiasDespues = new Date(hoy);
-  diezDiasDespues.setDate(hoy.getDate() + 10);
-
-  return fechaSeleccionada >= hoy && fechaSeleccionada <= diezDiasDespues;
-}
-
-  getToday(): Date {
-    const hoy = new Date();
-    hoy.setHours(0, 0, 0, 0);
-    return hoy;
+    this.http.post(this.backendUrl, this.nuevoEntrenador).subscribe({
+      next: (res: any) => {
+        this.successMessage = 'Entrenador agregado correctamente!';
+        // Limpiar formulario
+        this.nuevoEntrenador = {};
+        form.resetForm();
+        // Recargar lista
+        this.cargarEntrenadores();
+      },
+      error: (err) => {
+        console.error('Error agregando entrenador:', err);
+        this.errorMessage = err.error?.error || 'Ocurrió un error al agregar el entrenador';
+      }
+    });
   }
 
-  validateEmail(email: string): boolean {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  }
-
-   async onSubmit() {
-  this.submitted = true;
-
-  if (this.isValid()) {
-    try {
-      const quejaConFecha = {
-        ...this.queja,
-        fechaRegistro: new Date().toISOString(),
-      };
-      
-      // Aquí está la llamada al API de Firestore que guarda el documento:
-      // addDoc recibe la referencia a la colección 'quejas' y el objeto que se guardará
-      await addDoc(collection(this.firestore, 'quejas'), quejaConFecha);
-
-      Swal.fire({
-        icon: 'success',
-        title: this.editando ? '¡Queja actualizada!' : '¡Queja registrada!',
-        text: 'Gracias por compartir tu opinión. Trabajaremos en ello.',
-      });
-
-      this.queja = {
-        nombre: '',
-        correo: '',
-        motivo: '',
-        fecha: '',
-        opciones: [],
-        gravedad: ''
-      };
-      this.submitted = false;
-      this.editando = false;
-      this.indiceEditando = -1;
-    } catch (error) {
-      console.error('Error al guardar la queja en Firestore:', error);
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'No se pudo enviar la queja. Intenta más tarde.',
+  eliminarEntrenador(id: number) {
+  Swal.fire({
+    title: "¿Eliminar entrenador?",
+    text: "Esta acción no se puede deshacer",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar"
+  }).then(result => {
+    if (result.isConfirmed) {
+      this.http.delete(`${this.backendUrl}/${id}`).subscribe({
+        next: () => {
+          Swal.fire("Eliminado", "El entrenador ha sido eliminado", "success");
+          this.cargarEntrenadores(); // Recargar lista
+        },
+        error: (err) => {
+          console.error("Error al eliminar:", err);
+          Swal.fire("Error", "No se pudo eliminar el entrenador", "error");
+        }
       });
     }
-  }
+  });
 }
 
 
+// En nosotros.component.ts
+editarEntrenador(entrenador: Entrenador) {
+  Swal.fire({
+    title: "Editar Entrenador",
+    html: `
+      <input id="nombre" class="swal2-input" value="${entrenador.nombre || ''}" placeholder="Nombre">
+      <input id="especialidad" class="swal2-input" value="${entrenador.especialidad || ''}" placeholder="Especialidad">
+      <input id="horario" class="swal2-input" value="${entrenador.horario || ''}" placeholder="Horario">
+      <input id="correo" class="swal2-input" value="${entrenador.correo || ''}" placeholder="Correo">
+      <input id="telefono" class="swal2-input" value="${entrenador.telefono || ''}" placeholder="Teléfono">
+    `,
+    focusConfirm: false,
+    showCancelButton: true,
+    confirmButtonText: "Guardar cambios",
+    cancelButtonText: "Cancelar",
 
+    /* VALIDACIÓN aquí */
+    preConfirm: () => {
+      const nombre = (document.getElementById("nombre") as HTMLInputElement)?.value.trim();
+      const correo = (document.getElementById("correo") as HTMLInputElement)?.value.trim();
+      const especialidad = (document.getElementById("especialidad") as HTMLInputElement)?.value.trim();
+      const horario = (document.getElementById("horario") as HTMLInputElement)?.value.trim();
+      const telefono = (document.getElementById("telefono") as HTMLInputElement)?.value.trim();
 
-  tieneOpcionesSeleccionadas(): boolean {
-  return this.queja.opciones.some(o => o);
-}
-esFechaValida(): boolean {
-  if (!this.queja.fecha) return false;
-  return new Date(this.queja.fecha) >= this.getToday();
-}
+      if (!nombre || !correo) {
+        Swal.showValidationMessage("El nombre y el correo son campos obligatorios.");
+        return false;
+      }
 
-handleChange(event: Event, opcion: string): void {
-  const input = event.target as HTMLInputElement;
-  if (input.checked) {
-    this.queja.opciones.push(opcion);
-  } else {
-    const index = this.queja.opciones.indexOf(opcion);
-    if (index > -1) {
-      this.queja.opciones.splice(index, 1);
+      return { nombre, correo, especialidad, horario, telefono };
     }
-  }
+  }).then(result => {
+
+    // Si el usuario canceló, salir
+    if (!result.isConfirmed) return;
+
+    this.http.put(`${this.backendUrl}/${entrenador.id_entrenador}`, result.value).subscribe({
+      next: () => {
+        Swal.fire("Actualizado", "Datos actualizados correctamente", "success");
+        this.cargarEntrenadores();
+      },
+      error: (err) => {
+        console.error("Error actualizando:", err);
+        Swal.fire("Error", err.error?.error || "No se pudo actualizar el entrenador", "error");
+      }
+    });
+  });
 }
 
-}
+
+  }

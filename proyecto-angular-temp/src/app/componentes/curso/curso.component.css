@@ -85,3 +85,122 @@
   min-height: 80vh; /* o 100vh si quieres que ocupe toda la pantalla */
   text-align: center;
 }
+
+.curso-card {
+  position: relative;
+  transition: transform 0.2s;
+}
+.curso-card:hover {
+  transform: scale(1.02);
+}
+.admin-icons {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  gap: 5px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.admin-icons.show {
+  opacity: 1;
+}
+.icon-btn {
+  background: rgba(0,0,0,0.6);
+  color: white;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+}
+.icon-btn:hover {
+  background: rgba(0,0,0,0.8);
+}
+/* Contenedor de iconos oculto al inicio */
+.admin-icons {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  gap: 10px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+}
+
+/* Cuando el card tiene hover → mostrar iconos */
+.curso-card:hover .admin-icons,
+.admin-icons.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Estilo de los botones */
+.icon-btn {
+  width: 35px;
+  height: 35px;
+  background: rgba(0,0,0,0.65);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 18px;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.3s ease;
+}
+
+.icon-btn:hover {
+  transform: scale(1.1);
+  background: rgba(255, 191, 0, 0.9);
+}
+
+/* Colores adicionales */
+.icon-btn.delete {
+  background: rgba(255, 0, 0, 0.7);
+}
+
+.icon-btn.edit {
+  background: rgba(0, 128, 255, 0.7);
+}
+
+/* Asegurar que el card permita posicionar elementos absolutos */
+.curso-card {
+  position: relative;
+}
+
+.curso-link {
+  position: relative;
+  z-index: 1;
+}
+
+.admin-icons {
+  position: absolute;
+  z-index: 9999;
+}
+
+.curso-card:hover .admin-icons {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.curso-link {
+  position: relative;
+  z-index: 1; /* Queda abajo de los iconos */
+  display: block;
+}
+
+.admin-icons {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 5; /* Queda encima del <a> */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.curso-card:hover .admin-icons {
+  opacity: 1;
+  pointer-events: auto;
+}
